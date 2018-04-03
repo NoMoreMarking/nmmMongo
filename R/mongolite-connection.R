@@ -316,3 +316,39 @@ updateExport <- function(name, task, connStr){
   persons$update(pipeline, updateStr)
   return (NULL)
 }
+
+#' Set scaling factors for tasks
+#'
+#' @param task The task id
+#' @param uScale Scaling factor
+#' @param uiMean Mean of scale
+#' @param connStr A connection string.
+#' @return Nothing
+#' @examples
+#' updateScaling('FYB5kMkoh2v5sLsY7',6, 55, 'mongodb://')
+#' @export
+updateScaling <- function(task,uScale,uiMean,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('{"_id":"',task,'"}')
+  updateStr <- paste0('{"$set":{"anchorScaling.uScale": ',uScale,', "anchorScaling.uiMean":',uiMean,'}}')
+  tasks$update(pipeline, updateStr)
+  return (NULL)
+}
+
+#' Get scaling factors for tasks
+#'
+#' @param task The task id
+#' @param connStr A connection string.
+#' @return data frame with _id, scaling.uScale and scaling.uiMean
+#' @examples
+#' getScaling('FYB5kMkoh2v5sLsY7','mongodb://')
+#' @export
+getScaling <- function(task,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  qryString <- paste0('{"_id":"',task,'"}')
+  taskList <- tasks$find(query = qryString,
+                         fields = '{"scaling.uScale" : true,"scaling.uiMean": true, "anchorScaling.uScale" : true, "anchorScaling.uiMean" : true}')
+  tasks <- jsonlite::flatten(taskList)
+  return(tasks)
+}
+
