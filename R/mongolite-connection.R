@@ -18,15 +18,33 @@ getUsers <- function(connStr){
 #'
 #' @param taskId Task Id
 #' @param connStr A connection string.
+#' @param infit Only judges equal to or above this infit
+#' @param comparisons Only judges with equal of fewer than these comparisons
 #' @return A data frame with user details.
 #' @examples
 #' getJudges('ocjZYZAYLuZJyAv4h', 'mongodb://')
 #' @export
-getJudges <- function(taskId,connStr){
+getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
   judges <- mongolite::mongo(db='nmm-v2',collection="judges",url=connStr)
-  qryString <- paste0('{"task":"',taskId,'"}')
+  #qryString <- paste0('{"task":"',taskId,'","trueScore":"$gt"}')
+  
+  qryString <- paste0('{
+      "$and": [
+      {"task":"',taskId,'"},
+      {"$or": [
+        {"trueScore":{
+          "$gt":',infit,'
+        }}
+        ,
+        {"localComparisons":{
+          "$lt":',comparisons,'
+        }}
+        ]}]
+    }'
+  )
+  
   judgeList <- judges$find(query = qryString,
-                         fields = '{"_id" : true,"emailLower":true,"localComparisons":true,"trueScore":true,"medianTimeTaken":true,"createdAt": true}')
+                         fields = '{"_id" : true,"emailLower":true,"localComparisons":true,"trueScore":true,"medianTimeTaken":true,"createdAt": true, "excludeAnalysis": true}')
   return(judgeList)
 }
 

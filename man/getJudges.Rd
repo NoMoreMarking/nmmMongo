@@ -4,12 +4,16 @@
 \alias{getJudges}
 \title{Get judge details}
 \usage{
-getJudges(taskId, connStr)
+getJudges(taskId, connStr, infit = 0, comparisons = 10000)
 }
 \arguments{
 \item{taskId}{Task Id}
 
 \item{connStr}{A connection string.}
+
+\item{infit}{Only judges equal to or above this infit}
+
+\item{comparisons}{Only judges with equal of fewer than these comparisons}
 }
 \value{
 A data frame with user details.
