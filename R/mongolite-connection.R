@@ -347,7 +347,7 @@ getScaling <- function(task,connStr){
   tasks <- mongolite::mongo('tasks',url=connStr)
   qryString <- paste0('{"_id":"',task,'"}')
   taskList <- tasks$find(query = qryString,
-                         fields = '{"scaling.uScale" : true,"scaling.uiMean": true, "anchorScaling.uScale" : true, "anchorScaling.uiMean" : true}')
+                         fields = '{"name": true, "scaling.uScale" : true,"scaling.uiMean": true, "anchorScaling.uScale" : true, "anchorScaling.uiMean" : true}')
   tasks <- jsonlite::flatten(taskList)
   return(tasks)
 }
