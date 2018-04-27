@@ -63,7 +63,9 @@ getTasks <- function(taskName,connStr){
                          fields = '{"name" : true,"anchor" : true,"dash.candidates": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true}')
   tasks <- jsonlite::flatten(taskList)
   if(nrow(tasks)>0){
-    if(ncol(tasks)==7){
+    if(ncol(tasks)==6){
+      names(tasks) = c('id','name','anchor','decisions','candidates','judges')
+    } else if(ncol(tasks)==7){
       names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges')
     } else {
       names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread')
