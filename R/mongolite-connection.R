@@ -67,6 +67,8 @@ getTasks <- function(taskName,connStr){
       names(tasks) = c('id','name','anchor','decisions','candidates','judges')
     } else if(ncol(tasks)==7){
       names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges')
+    } else if(ncol(tasks)==12){
+      names(tasks) <- c('id','name','anchor','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread')
     } else {
       names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread')
     }
