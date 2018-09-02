@@ -368,7 +368,7 @@ getSales <- function(product,connStr){
   basket <- mongolite::mongo('shop.basket2',url=connStr)
   qryString <- paste0('{"product":"',product,'"}')
   salesList <- basket$find(query = qryString,
-                         fields = '{"purchaseDate": true, "dfe":true, "withdrawn":true, "status":true, "pupils": true}')
+                         fields = '{"purchaseDate": true, "dfe":true, "withdrawn":true, "status":true, "pupils": true, "superUser":true}')
   sales <- jsonlite::flatten(salesList)
   return(sales)
 }
