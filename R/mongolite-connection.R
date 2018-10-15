@@ -72,9 +72,9 @@ getTasks <- function(taskName,connStr){
     } else if(ncol(tasks)==8){
       names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges','dfe')
     } else if(ncol(tasks)==13){
-      names(tasks) <- c('id','name','anchor','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread','dfe')
+      names(tasks) <- c('id','name','anchor','decisions','judges','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
     } else {
-      names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread','dfe')
+      names(tasks) <- c('id','name','anchor','reliability','decisions','judges','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
     }
     return(tasks)
   } else {
