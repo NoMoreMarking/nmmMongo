@@ -62,15 +62,19 @@ getTasks <- function(taskName,connStr){
   taskList <- tasks$find(query = qryString,
                          fields = '{"name" : true,"anchor" : true,"dash.candidates": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true}')
   tasks <- jsonlite::flatten(taskList)
+  dfe_str <- "[0-9]{7}"
+  tasks <- tasks %>% mutate(
+    dfe = str_extract(name, dfe_str)  
+  )
   if(nrow(tasks)>0){
-    if(ncol(tasks)==6){
-      names(tasks) = c('id','name','anchor','decisions','candidates','judges')
-    } else if(ncol(tasks)==7){
-      names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges')
-    } else if(ncol(tasks)==12){
-      names(tasks) <- c('id','name','anchor','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread')
+    if(ncol(tasks)==7){
+      names(tasks) = c('id','name','anchor','decisions','candidates','judges','dfe')
+    } else if(ncol(tasks)==8){
+      names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges','dfe')
+    } else if(ncol(tasks)==13){
+      names(tasks) <- c('id','name','anchor','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread','dfe')
     } else {
-      names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread')
+      names(tasks) <- c('id','name','anchor','reliability','decisions','candidates','judges','generatedPages','scanUploads','valid','invalid','notDetected','unread','dfe')
     }
     return(tasks)
   } else {
@@ -197,13 +201,12 @@ getPersons <- function(taskName, connStr){
   { "$match": { "name":{"$regex":"',taskName,'","$options":"i"}}},
     { "$lookup": { "from": "persons", "localField": "_id", "foreignField": "task", "as": "Persons"} },
     { "$unwind": { "path": "$Persons" } },
-    { "$project": { "task": "$_id", "taskName": "$name", "person": "$Persons._id", "name": "$Persons.name", "status": "$Persons.status", "candidate": "$Persons.bio.candidate", "firstName": "$Persons.bio.firstName", "lastName": "$Persons.bio.lastName", "dob": "$Persons.bio.dobs", "gender": "$Persons.bio.gender", "group": "$Persons.bio.group", "pp": "$Persons.bio.pupilPremium" , "comparisons":"$Persons.comparisons","theta":"$Persons.trueScore","seTrueScore":"$Persons.seTrueScore","scaledScore":"$Persons.scaledScore","seScaledScore":"$Persons.seScaledScore","level":"$Persons.level", "infit":"$Persons.infit", "anchorScore":"$Persons.anchorScore"} } ]')
+    { "$project": { "task": "$_id", "taskName": "$name", "person": "$Persons._id", "name": "$Persons.name", "status": "$Persons.status", "candidate": "$Persons.bio.candidate", "firstName": "$Persons.bio.firstName", "lastName": "$Persons.bio.lastName", "dob": "$Persons.bio.dobs", "gender": "$Persons.bio.gender", "group": "$Persons.bio.group", "pp": "$Persons.bio.pupilPremium" , "comparisons":"$Persons.comparisons","theta":"$Persons.trueScore","seTrueScore":"$Persons.seTrueScore","scaledScore":"$Persons.scaledScore","seScaledScore":"$Persons.seScaledScore","level":"$Persons.level", "infit":"$Persons.infit", "anchorScore":"$Persons.anchorScore", "yearGroup":"$Persons.bio.YG"} } ]')
   taskPersons <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
-  if(nrow(taskPersons)>0){
-    chr <- nchar(unique(taskPersons$taskName))
-    strt <- chr - 6
-    taskPersons <- taskPersons %>% mutate(dfe=substr(taskName,start=strt,stop=chr))
-  }
+  dfe_str <- "[0-9]{7}"
+  taskPersons <- taskPersons %>% mutate(
+    dfe = str_extract(taskName, dfe_str)  
+  )
   return(taskPersons)
 }
 
@@ -225,11 +228,10 @@ getScores <- function(taskName, connStr){
                      { "$unwind": { "path": "$Persons" } },
                      { "$project": { "taskName": "$name", "scaledScore":"$Persons.scaledScore","trueScore":"$Persons.trueScore"} } ]')
   taskPersons <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
-  if(nrow(taskPersons)>0){
-    chr <- nchar(unique(taskPersons$taskName))
-    strt <- chr - 6
-    taskPersons <- taskPersons %>% mutate(dfe=substr(taskName,start=strt,stop=chr))
-  }
+  dfe_str <- "[0-9]{7}"
+  taskPersons <- taskPersons %>% mutate(
+    dfe = str_extract(taskName, dfe_str)  
+  )
   return(taskPersons)
 }
 
