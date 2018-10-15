@@ -60,7 +60,7 @@ getTasks <- function(taskName,connStr){
   tasks <- mongolite::mongo(db='nmm-v2',collection="tasks",url=connStr)
   qryString <- paste0('{"name":{"$regex":"',taskName,'","$options":"i"}}')
   taskList <- tasks$find(query = qryString,
-                         fields = '{"name" : true,"anchor" : true,"dash.candidates": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true}')
+                         fields = '{"name" : true,"anchor" : true,"completed.qrMatched": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true}')
   tasks <- jsonlite::flatten(taskList)
   dfe_str <- "[0-9]{7}"
   tasks <- tasks %>% mutate(
