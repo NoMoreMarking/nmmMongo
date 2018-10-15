@@ -383,18 +383,10 @@ getSales <- function(product,connStr){
 #' getPages('AF85HY','w2XzcMW3Rwb7pthe6', 'mongodb://')
 #' @export
 #' @import dplyr
-getPages <- function(taskName, connStr){
-  tasks <- mongolite::mongo('tasks',url=connStr)
-  pipeline <- paste0('[
-                     { "$match": { "name":{"$regex":"',taskName,'","$options":"i"}}},
-                     { "$lookup": { "from": "persons", "localField": "_id", "foreignField": "task", "as": "Persons"} },
-                     { "$unwind": { "path": "$Persons" } },
-                     { "$project": { "task": "$_id", "taskName": "$name", "person": "$Persons._id", "name": "$Persons.name", "status": "$Persons.status", "candidate": "$Persons.bio.candidate", "firstName": "$Persons.bio.firstName", "lastName": "$Persons.bio.lastName", "dob": "$Persons.bio.dobs", "gender": "$Persons.bio.gender", "group": "$Persons.bio.group", "pp": "$Persons.bio.pupilPremium" , "comparisons":"$Persons.comparisons","theta":"$Persons.trueScore","seTrueScore":"$Persons.seTrueScore","scaledScore":"$Persons.scaledScore","seScaledScore":"$Persons.seScaledScore","level":"$Persons.level", "infit":"$Persons.infit", "anchorScore":"$Persons.anchorScore"} } ]')
-  taskPersons <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
-  if(nrow(taskPersons)>0){
-    chr <- nchar(unique(taskPersons$taskName))
-    strt <- chr - 6
-    taskPersons <- taskPersons %>% mutate(dfe=substr(taskName,start=strt,stop=chr))
-  }
-  return(taskPersons)
+getPages <- function(qrcode, task, connStr){
+  pdfs <- mongolite::mongo('scans.qrcodes.pdfs',url=connStr)
+  qryString <- paste0('{"qrcode":"',qrcode,'","task":"',task,'"}')
+  pages <- pdfs$find(qryString)
+  n <- nrow(pages)
+  return(n)
 }
