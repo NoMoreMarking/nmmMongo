@@ -60,21 +60,21 @@ getTasks <- function(taskName,connStr){
   tasks <- mongolite::mongo(db='nmm-v2',collection="tasks",url=connStr)
   qryString <- paste0('{"name":{"$regex":"',taskName,'","$options":"i"}}')
   taskList <- tasks$find(query = qryString,
-                         fields = '{"name" : true,"anchor" : true,"completed.qrMatched": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true, "modCode":true}')
+                         fields = '{"name" : true,"anchor" : true,"completed.qrMatched": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true, "modCode":true, "scaling.uScale":true, "scaling.uiMean":true}')
   tasks <- jsonlite::flatten(taskList)
   dfe_str <- "[0-9]{7}"
   tasks <- tasks %>% mutate(
     dfe = str_extract(name, dfe_str)  
   )
   if(nrow(tasks)>0){
-    if(ncol(tasks)==8){
-      names(tasks) = c('id','name','anchor','modCode','decisions','candidates','judges','dfe')
-    } else if(ncol(tasks)==9){
-      names(tasks) <- c('id','name','anchor','modCode','reliability','decisions','candidates','judges','dfe')
-    } else if(ncol(tasks)==14){
-      names(tasks) <- c('id','name','anchor','modCode','decisions','judges','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
+    if(ncol(tasks)==10){
+      names(tasks) = c('id','name','anchor','modCode','decisions','candidates','judges','uScale','uiMean','dfe')
+    } else if(ncol(tasks)==11){
+      names(tasks) <- c('id','name','anchor','modCode','reliability','decisions','candidates','judges','uScale','uiMean','dfe')
+    } else if(ncol(tasks)==16){
+      names(tasks) <- c('id','name','anchor','modCode','decisions','judges','uScale','uiMean','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
     } else {
-      names(tasks) <- c('id','name','anchor','modCode','reliability','decisions','judges','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
+      names(tasks) <- c('id','name','anchor','modCode','reliability','decisions','judges','uScale','uiMean','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
     }
     return(tasks)
   } else {
