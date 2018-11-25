@@ -3,6 +3,7 @@
 export(excludeJudge)
 export(getDecisions)
 export(getJudges)
+export(getJudging)
 export(getLevels)
 export(getPages)
 export(getPersons)
