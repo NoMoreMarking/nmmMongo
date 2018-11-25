@@ -392,3 +392,43 @@ getPages <- function(qrcode, task, connStr){
   n <- nrow(pages)
   return(n)
 }
+
+
+#' Get judging pair for a judge id
+#'
+#' @param id The judge id.
+#' @param connStr A connection string.
+#' @return A named list with the id of the pair & name of the left and right script
+#' @examples
+#' getJudging('efY4MWWcNuoHYPZ5B', 'mongodb://')
+#' @export
+getJudging <- function(judge, connStr) {
+  
+  judging <- mongolite::mongo('judging',url=connStr)
+  
+  pipeline <- paste0('[{
+                     "$match": {"pair.judge":"efY4MWWcNuoHYPZ5B"}},
+                     {"$lookup":
+                     {
+                     "from": "persons",
+                     "localField": "pair.left._id",
+                     "foreignField": "_id",
+                     "as": "leftScript"
+                     }
+                     },
+                     {
+                     "$lookup":
+                     {
+                     "from": "persons",
+                     "localField": "pair.right._id",
+                     "foreignField": "_id",
+                     "as": "rightScript"
+                     }
+                     }]')
+  
+  judgingPair <- judging$aggregate(pipeline,options = '{"allowDiskUse":true}')
+  left <- judgingPair$leftScript[[1]]$name
+  right <- judgingPair$rightScript[[1]]$name
+  id <-judgingPair$`_id` 
+  return(c("id"=id,"left"=left,"right"=right))
+}
