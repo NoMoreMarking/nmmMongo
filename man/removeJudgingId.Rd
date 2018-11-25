@@ -2,7 +2,7 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{removeJudgingId}
 \alias{removeJudgingId}
-\title{Get pages for a candidate}
+\title{Remove a judging pair with a judging id from getJudging}
 \usage{
 removeJudgingId(judgingid, connStr)
 }
@@ -12,7 +12,7 @@ removeJudgingId(judgingid, connStr)
 \item{connStr}{A connection string.}
 }
 \description{
-Get pages for a candidate
+Remove a judging pair with a judging id from getJudging
 }
 \examples{
 removeJudgingId('gpftTfdPKeBEiz7pd', 'mongodb://')

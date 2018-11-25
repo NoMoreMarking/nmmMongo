@@ -433,7 +433,7 @@ getJudging <- function(judge, connStr) {
   return(c("id"=id,"left"=left,"right"=right))
 }
 
-#' Get pages for a candidate
+#' Remove a judging pair with a judging id from getJudging
 #'
 #' @param judgingid The name of the pair to remove
 #' @param connStr A connection string.
