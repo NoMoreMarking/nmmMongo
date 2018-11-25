@@ -407,7 +407,7 @@ getJudging <- function(judge, connStr) {
   judging <- mongolite::mongo('judging',url=connStr)
   
   pipeline <- paste0('[{
-                     "$match": {"pair.judge":"efY4MWWcNuoHYPZ5B"}},
+                     "$match": {"pair.judge":"',judge,'"}},
                      {"$lookup":
                      {
                      "from": "persons",
@@ -431,4 +431,20 @@ getJudging <- function(judge, connStr) {
   right <- judgingPair$rightScript[[1]]$name
   id <-judgingPair$`_id` 
   return(c("id"=id,"left"=left,"right"=right))
+}
+
+#' Get pages for a candidate
+#'
+#' @param judgingid The name of the pair to remove
+#' @param connStr A connection string.
+#' @return NULL
+#' @examples
+#' removeJudgingId('gpftTfdPKeBEiz7pd', 'mongodb://')
+#' @export
+#' @import dplyr
+removeJudgingId <- function(judgingid, connStr){
+  judging <- mongolite::mongo('judging',url=connStr)
+  qryString <- paste0('{"_id":"',judgingid,'"}')
+  judging$remove(qryString, just_one = TRUE)
+  return(NULL)
 }
