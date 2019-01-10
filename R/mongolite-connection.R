@@ -68,7 +68,6 @@ getTasks <- function(taskName,connStr){
                            fields = '{"name" : true,"anchor" : true,"dash.candidates": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"modCode":true, "scaling.uScale":true, "scaling.uiMean":true}')
     tasks <- jsonlite::flatten(taskList)
   }
-  
   dfe_str <- "[0-9]{7}"
   tasks <- tasks %>% mutate(
     dfe = str_extract(name, dfe_str)  
