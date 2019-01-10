@@ -57,11 +57,18 @@ getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
 #' getTasks('Sharing Standards 2017-2018 Year 5', 'mongodb://') will match all Year 5 tasks.
 #' @export
 getTasks <- function(taskName,connStr){
-  tasks <- mongolite::mongo(db='nmm-v2',collection="tasks",url=connStr)
+  tasksCollection <- mongolite::mongo(db='nmm-v2',collection="tasks",url=connStr)
   qryString <- paste0('{"name":{"$regex":"',taskName,'","$options":"i"}}')
-  taskList <- tasks$find(query = qryString,
+  taskList <- tasksCollection$find(query = qryString,
                          fields = '{"name" : true,"anchor" : true,"completed.qrMatched": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true, "modCode":true, "scaling.uScale":true, "scaling.uiMean":true}')
   tasks <- jsonlite::flatten(taskList)
+  # a task won't have the completed fields if not on utils
+  if(sum(grepl('completed',names(tasks)))==0){
+    taskList <- tasksCollection$find(query = qryString,
+                           fields = '{"name" : true,"anchor" : true,"dash.candidates": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"modCode":true, "scaling.uScale":true, "scaling.uiMean":true}')
+    tasks <- jsonlite::flatten(taskList)
+  }
+  
   dfe_str <- "[0-9]{7}"
   tasks <- tasks %>% mutate(
     dfe = str_extract(name, dfe_str)  
