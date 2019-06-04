@@ -48,7 +48,7 @@ getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
   return(judgeList)
 }
 
-#' Get task ids, names and number of decisions completed.
+#' Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.
 #'
 #' @param taskName Tasks will be matched if their name includes the taskName string.
 #' @param connStr A connection string.
@@ -57,31 +57,16 @@ getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
 #' getTasks('Sharing Standards 2017-2018 Year 5', 'mongodb://') will match all Year 5 tasks.
 #' @export
 getTasks <- function(taskName,connStr){
-  tasksCollection <- mongolite::mongo(db='nmm-v2',collection="tasks",url=connStr)
+  tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
   qryString <- paste0('{"name":{"$regex":"',taskName,'","$options":"i"}}')
-  taskList <- tasksCollection$find(query = qryString,
-                         fields = '{"name" : true,"anchor" : true,"completed.qrMatched": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"completed.genPages":true,"completed.respPages":true,"completed.valid":true,"completed.invalid":true,"completed.notDetected":true,"completed.unread":true, "modCode":true, "scaling.uScale":true, "scaling.uiMean":true}')
+  taskList <- tasksCollection$find(query = qryString)
   tasks <- jsonlite::flatten(taskList)
   # a task won't have the completed fields if not on utils
-  if(sum(grepl('completed',names(tasks)))==0){
-    taskList <- tasksCollection$find(query = qryString,
-                           fields = '{"name" : true,"anchor" : true,"dash.candidates": true,"dash.judgements": true,"dash.judges": true,"reliability":true,"modCode":true, "scaling.uScale":true, "scaling.uiMean":true}')
-    tasks <- jsonlite::flatten(taskList)
-  }
   dfe_str <- "[0-9]{7}"
   tasks <- tasks %>% mutate(
     dfe = str_extract(name, dfe_str)  
   )
   if(nrow(tasks)>0){
-    if(ncol(tasks)==10){
-      names(tasks) = c('id','name','anchor','modCode','decisions','candidates','judges','uScale','uiMean','dfe')
-    } else if(ncol(tasks)==11){
-      names(tasks) <- c('id','name','anchor','modCode','reliability','decisions','candidates','judges','uScale','uiMean','dfe')
-    } else if(ncol(tasks)==16){
-      names(tasks) <- c('id','name','anchor','modCode','decisions','judges','uScale','uiMean','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
-    } else {
-      names(tasks) <- c('id','name','anchor','modCode','reliability','decisions','judges','uScale','uiMean','generatedPages','scanUploads','candidates','valid','invalid','notDetected','unread','dfe')
-    }
     return(tasks)
   } else {
     cat('No tasks found')
@@ -364,7 +349,7 @@ getScaling <- function(task,connStr){
   return(tasks)
 }
 
-#' Get sales data
+#' Get sales data. Updated for nmm-vegas-db.
 #'
 #' @param project The project id
 #' @param connStr A connection string.
@@ -373,10 +358,9 @@ getScaling <- function(task,connStr){
 #' getSales('vqPwL2wWX8qc26nWs','mongodb://')
 #' @export
 getSales <- function(product,connStr){
-  basket <- mongolite::mongo('shop.basket2',url=connStr)
+  basket <- mongolite::mongo(db='nmm-vegas-db',collection="purchases",url=connStr)
   qryString <- paste0('{"product":"',product,'"}')
-  salesList <- basket$find(query = qryString,
-                         fields = '{"purchaseDate": true, "dfe":true, "withdrawn":true, "status":true, "pupils": true, "superUser":true, "owners":true}')
+  salesList <- basket$find(query = qryString)
   sales <- jsonlite::flatten(salesList)
   return(sales)
 }
