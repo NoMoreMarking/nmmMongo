@@ -61,18 +61,15 @@ getTasks <- function(taskName,connStr){
   qryString <- paste0('{"name":{"$regex":"',taskName,'","$options":"i"}}')
   taskList <- tasksCollection$find(query = qryString)
   tasks <- jsonlite::flatten(taskList)
-  # a task won't have the completed fields if not on utils
-  dfe_str <- "[0-9]{7}"
-  tasks <- tasks %>% mutate(
-    dfe = str_extract(name, dfe_str)  
-  )
   if(nrow(tasks)>0){
-    return(tasks)
+    dfe_str <- "[0-9]{7}"
+    tasks <- tasks %>% mutate(
+      dfe = str_extract(name, dfe_str)  
+    )
   } else {
-    cat('No tasks found')
-    return(NULL)
+    cat('No tasks found for', taskName,'.\n')
   }
-
+  return(tasks)
 }
 
 #' Get task id, name and number of decisions completed.
