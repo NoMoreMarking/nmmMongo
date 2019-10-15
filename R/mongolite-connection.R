@@ -176,11 +176,11 @@ setModerationCode <- function(task,modCode,connStr){
 
 #' Get persons from a task or tasks
 #'
-#' @param taskName The task name, tasks will be matched if their name includes the taskName string.
+#' @param syllabus The task syllabus
 #' @param connStr A connection string.
 #' @return A data frame with persons
 #' @examples
-#' getPersons('Sharing Standards 2017-2018 Year 3', 'mongodb://')
+#' getPersons('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')
 #' @export
 #' @import dplyr
 getPersons <- function(syllabus, connStr){
