@@ -185,8 +185,12 @@ setModerationCode <- function(task,modCode,connStr){
 #' @import dplyr
 getPersons <- function(syllabus, connStr){
   tasks <- mongolite::mongo('tasks',url=connStr)
-  pipeline <- paste0('[{"$match" : {"syllabus" : "ee64c76a-5312-4e95-b315-ef5aca44539b"}},{"$lookup" : {"from" : "candidates", "localField" : "_id", "foreignField" : "localTask", "as" : "taskCandidates"}}, { "$unwind" : {"path" : "$taskCandidates"}},{"$project":{"name":1.0,"dfe":1.0,"taskCandidates" : 1.0}}, {"$project" : {"taskCandidates.owners" : 0.0,"taskCandidates.opponents":0.0,"taskCandidates.localOpponents":0.0,"taskCandidates.modOpponents":0.0,"taskCandidates.scans":0.0 }}]')
+  pipeline <- paste0('[{"$match" : {"syllabus" : "',syllabus,'"}},{"$lookup" : {"from" : "candidates", "localField" : "_id", "foreignField" : "localTask", "as" : "taskCandidates"}}, { "$unwind" : {"path" : "$taskCandidates"}},{"$project":{"taskCandidates" : 1.0}}, {"$project" : {"taskCandidates.owners" : 0.0,"taskCandidates.opponents":0.0,"taskCandidates.localOpponents":0.0,"taskCandidates.modOpponents":0.0,"taskCandidates.scans":0.0 }},{"$replaceRoot" : {"newRoot" : "$taskCandidates"}}]')
   taskPersons <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
+  dfe_str <- "[0-9]{7}"
+  taskPersons <- taskPersons %>% mutate(
+    dfe = str_extract(taskName, dfe_str)  
+  )
   return(taskPersons)
 }
 
