@@ -44,7 +44,7 @@ getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
   )
   
   judgeList <- judges$find(query = qryString,
-                         fields = '{"_id" : true,"emailLower":true,"localComparisons":true,"trueScore":true,"medianTimeTaken":true,"createdAt": true, "excludeAnalysis": true}')
+                           fields = '{"_id" : true,"emailLower":true,"localComparisons":true,"trueScore":true,"medianTimeTaken":true,"createdAt": true, "excludeAnalysis": true}')
   return(judgeList)
 }
 
@@ -93,7 +93,7 @@ getTask <- function(taskName,connStr){
     cat('No task returned\n')
     return(NULL)
   }
-
+  
 }
 
 #' Get level names and cut off values for a task
@@ -183,21 +183,12 @@ setModerationCode <- function(task,modCode,connStr){
 #' getPersons('Sharing Standards 2017-2018 Year 3', 'mongodb://')
 #' @export
 #' @import dplyr
-getPersons <- function(taskName, connStr){
+getPersons <- function(syllabus, connStr){
   tasks <- mongolite::mongo('tasks',url=connStr)
-  pipeline <- paste0('[
-  { "$match": { "name":{"$regex":"',taskName,'","$options":"i"}}},
-    { "$lookup": { "from": "persons", "localField": "_id", "foreignField": "task", "as": "Persons"} },
-    { "$unwind": { "path": "$Persons" } },
-    { "$project": { "task": "$_id", "taskName": "$name", "person": "$Persons._id", "name": "$Persons.name", "status": "$Persons.status", "candidate": "$Persons.bio.candidate", "firstName": "$Persons.bio.firstName", "lastName": "$Persons.bio.lastName", "dob": "$Persons.bio.dobs", "gender": "$Persons.bio.gender", "group": "$Persons.bio.group", "pp": "$Persons.bio.pupilPremium" , "comparisons":"$Persons.comparisons","theta":"$Persons.trueScore","seTrueScore":"$Persons.seTrueScore","scaledScore":"$Persons.scaledScore","seScaledScore":"$Persons.seScaledScore","level":"$Persons.level", "infit":"$Persons.infit", "anchorScore":"$Persons.anchorScore", "yearGroup":"$Persons.bio.YG"} } ]')
+  pipeline <- paste0('[{"$match" : {"syllabus" : "ee64c76a-5312-4e95-b315-ef5aca44539b"}},{"$lookup" : {"from" : "candidates", "localField" : "_id", "foreignField" : "localTask", "as" : "taskCandidates"}}, { "$unwind" : {"path" : "$taskCandidates"}},{"$project":{"name":1.0,"dfe":1.0,"taskCandidates" : 1.0}}, {"$project" : {"taskCandidates.owners" : 0.0,"taskCandidates.opponents":0.0,"taskCandidates.localOpponents":0.0,"taskCandidates.modOpponents":0.0,"taskCandidates.scans":0.0 }}]')
   taskPersons <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
-  dfe_str <- "[0-9]{7}"
-  taskPersons <- taskPersons %>% mutate(
-    dfe = str_extract(taskName, dfe_str)  
-  )
   return(taskPersons)
 }
-
 
 #' Get scores from a task or tasks
 #'
@@ -233,9 +224,9 @@ getScores <- function(taskName, connStr){
 #' @export
 #' @import dplyr
 getDecisions <- function(taskName, connStr) {
-
+  
   tasks <- mongolite::mongo('tasks',url=connStr)
-
+  
   pipeline <- paste0('[
   { "$match": { "name":{"$regex":"',taskName,'","$options":"i"}}},
   { "$project": {"_id":1, "name":1}},
@@ -265,33 +256,33 @@ getDecisions <- function(taskName, connStr) {
       }
       }
       ]')
-
-taskDecisions <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
-
-decisions <- taskDecisions$Decisions[[1]]
-judges <- taskDecisions$Judges[[1]]
-players <- taskDecisions$Persons[[1]]
-tasks <- taskDecisions %>% select("_id","name")
-
-# print(head(decisions))
-# print(head(judges))
-# print(head(tasks))
-# print(head(players))
-
-if(length(decisions)>0){
-
-  df <- left_join(decisions, judges, by=c('judge'='_id'))
-  df <- left_join(df, players, by=c('chosen'='_id'))
-  df <- left_join(df, players, by=c('notChosen'='_id'))
-  df <- left_join(df, tasks, by=c('task'='_id'))
-  df <- df %>% filter(!is.na(name.x),!is.na(name.y)) %>%
-    select(task=name,chosen=name.x, notChosen=name.y,judge=email,timeTaken,createdAt,judge_id=judge)
-
-} else {
-  df <- NULL
-}
-
-return(df)
+  
+  taskDecisions <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
+  
+  decisions <- taskDecisions$Decisions[[1]]
+  judges <- taskDecisions$Judges[[1]]
+  players <- taskDecisions$Persons[[1]]
+  tasks <- taskDecisions %>% select("_id","name")
+  
+  # print(head(decisions))
+  # print(head(judges))
+  # print(head(tasks))
+  # print(head(players))
+  
+  if(length(decisions)>0){
+    
+    df <- left_join(decisions, judges, by=c('judge'='_id'))
+    df <- left_join(df, players, by=c('chosen'='_id'))
+    df <- left_join(df, players, by=c('notChosen'='_id'))
+    df <- left_join(df, tasks, by=c('task'='_id'))
+    df <- df %>% filter(!is.na(name.x),!is.na(name.y)) %>%
+      select(task=name,chosen=name.x, notChosen=name.y,judge=email,timeTaken,createdAt,judge_id=judge)
+    
+  } else {
+    df <- NULL
+  }
+  
+  return(df)
 }
 
 #' Set script as export into anchor set
