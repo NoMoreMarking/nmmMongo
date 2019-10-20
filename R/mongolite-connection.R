@@ -47,6 +47,7 @@ getJudgesBySyllabus <- function(syllabus, connStr){
   }, 
   { 
   "$project" : {
+  "_id" : 1.0,
   "name" : 1.0, 
   "taskJudges.email" : 1.0, 
   "taskJudges.localComparisons" : 1.0, 
@@ -184,8 +185,8 @@ getLevels <- function(taskName, connStr){
 excludeJudge <- function(judge_id,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
   qry <- paste0('{"_id":"',judge_id,'"}')
-  judges$update(query=qry, update='{"$set":{"excludeAnalysis": 1}}')
-  return (NULL)
+  result <- judges$update(query=qry, update='{"$set":{"exclude": "true"}}')
+  return (result)
 }
 
 #' Update anchor value for a person id
