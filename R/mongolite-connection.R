@@ -14,6 +14,54 @@ getUsers <- function(connStr){
   return(userList)
 }
 
+
+#' Get judges for a syllabus
+#'
+#' @param syllabus The syllabus id
+#' @param connStr A connection string.
+#' @return A data frame with judge details.
+#' @examples
+#' getJudgesBySyllabus(syllabusid, 'mongodb://')
+#' @export
+getJudgesBySyllabus <- function(syllabus, connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('
+  [
+        { 
+  "$match" : {
+  "syllabus" : "',syllabus,'"
+  }
+}, 
+  { 
+  "$lookup" : {
+  "from" : "judges", 
+  "localField" : "_id", 
+  "foreignField" : "localTask", 
+  "as" : "taskJudges"
+  }
+  }, 
+  { 
+  "$unwind" : {
+  "path" : "$taskJudges"
+  }
+  }, 
+  { 
+  "$project" : {
+  "name" : 1.0, 
+  "taskJudges.email" : 1.0, 
+  "taskJudges.localComparisons" : 1.0, 
+  "taskJudges.modComparisons" : 1.0, 
+  "taskJudges.trueScore" : 1.0, 
+  "taskJudges._medianTimeTaken" : 1.0, 
+  "taskJudges._perLeft" : 1.0
+  }
+  }
+  ]')
+  judgeList <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
+  judges <- jsonlite::flatten(judgeList)  
+  return(judges)
+}
+
 #' Get judge details
 #'
 #' @param taskId Task Id
