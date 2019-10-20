@@ -47,8 +47,8 @@ getJudgesBySyllabus <- function(syllabus, connStr){
   }, 
   { 
   "$project" : {
-  "_id" : 1.0,
   "name" : 1.0, 
+  "taskJudges._id" : 1.0,
   "taskJudges.email" : 1.0, 
   "taskJudges.localComparisons" : 1.0, 
   "taskJudges.modComparisons" : 1.0, 
