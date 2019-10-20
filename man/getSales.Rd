@@ -2,7 +2,7 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{getSales}
 \alias{getSales}
-\title{Get sales data}
+\title{Get sales data. Updated for nmm-vegas-db.}
 \usage{
 getSales(product, connStr)
 }
@@ -15,7 +15,7 @@ getSales(product, connStr)
 data frame product data
 }
 \description{
-Get sales data
+Get sales data. Updated for nmm-vegas-db.
 }
 \examples{
 getSales('vqPwL2wWX8qc26nWs','mongodb://')

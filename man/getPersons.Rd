@@ -4,10 +4,10 @@
 \alias{getPersons}
 \title{Get persons from a task or tasks}
 \usage{
-getPersons(taskName, connStr)
+getPersons(syllabus, connStr)
 }
 \arguments{
-\item{taskName}{The task name, tasks will be matched if their name includes the taskName string.}
+\item{syllabus}{The task syllabus}
 
 \item{connStr}{A connection string.}
 }
@@ -18,5 +18,5 @@ A data frame with persons
 Get persons from a task or tasks
 }
 \examples{
-getPersons('Sharing Standards 2017-2018 Year 3', 'mongodb://')
+getPersons('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')
 }
