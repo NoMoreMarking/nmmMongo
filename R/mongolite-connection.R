@@ -262,10 +262,13 @@ getPersonsFromTask <- function(task,mod=FALSE,connStr){
     qryString <- paste0('{"modTask":"',task,'"}')
   }
   taskPersons <- candidates$find(qryString, fields='{"owners" : 0.0,"opponents":0.0,"localOpponents":0.0,"modOpponents":0.0,"scans":0.0 }')
-  dfe_str <- "[0-9]{7,12}"
-  taskPersons <- taskPersons %>% mutate(
-    dfe = str_extract(taskName, dfe_str)  
-  )
+  if(nrow(taskPersons)>0)
+  {
+    dfe_str <- "[0-9]{7,12}"
+    taskPersons <- taskPersons %>% mutate(
+      dfe = str_extract(taskName, dfe_str)
+    )  
+  }
   return(taskPersons)
 }
 
