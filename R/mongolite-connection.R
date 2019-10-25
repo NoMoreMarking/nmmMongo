@@ -229,13 +229,38 @@ setModerationCode <- function(task,modCode,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with persons
 #' @examples
-#' getPersons('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')
+#' getPersonsFromSyllabus('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')
 #' @export
 #' @import dplyr
-getPersons <- function(syllabus, connStr){
+getPersonsFromSyllabus <- function(syllabus, connStr){
   tasks <- mongolite::mongo('tasks',url=connStr)
   pipeline <- paste0('[{"$match" : {"syllabus" : "',syllabus,'"}},{"$lookup" : {"from" : "candidates", "localField" : "_id", "foreignField" : "localTask", "as" : "taskCandidates"}}, { "$unwind" : {"path" : "$taskCandidates"}},{"$project":{"taskCandidates" : 1.0}}, {"$project" : {"taskCandidates.owners" : 0.0,"taskCandidates.opponents":0.0,"taskCandidates.localOpponents":0.0,"taskCandidates.modOpponents":0.0,"taskCandidates.scans":0.0 }},{"$replaceRoot" : {"newRoot" : "$taskCandidates"}}]')
   taskPersons <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
+  dfe_str <- "[0-9]{7,12}"
+  taskPersons <- taskPersons %>% mutate(
+    dfe = str_extract(taskName, dfe_str)  
+  )
+  return(taskPersons)
+}
+
+#' Get persons from a task or tasks
+#'
+#' @param task The task id
+#' @param mod Is it a moderation task you want?
+#' @param connStr A connection string.
+#' @return A data frame with persons
+#' @examples
+#' getPersons('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')
+#' @export
+#' @import dplyr
+getPersonsFromTask <- function(task,mod=FALSE,connStr){
+  candidates <- mongolite::mongo('candidates',url=connStr)
+  if(!mod) {
+    qryString <- paste0('{"localTask":"',task,'"}')
+  } else {
+    qryString <- paste0('{"modTask":"',task,'"}')
+  }
+  taskPersons <- candidates$find(qryString, fields='{"taskCandidates.owners" : 0.0,"taskCandidates.opponents":0.0,"taskCandidates.localOpponents":0.0,"taskCandidates.modOpponents":0.0,"taskCandidates.scans":0.0 }')
   dfe_str <- "[0-9]{7,12}"
   taskPersons <- taskPersons %>% mutate(
     dfe = str_extract(taskName, dfe_str)  
