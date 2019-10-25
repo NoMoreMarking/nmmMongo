@@ -243,14 +243,15 @@ getPersonsFromSyllabus <- function(syllabus, connStr){
   return(taskPersons)
 }
 
-#' Get persons from a task or tasks
+#' Get candidates from a task or tasks
 #'
+#' @description Get the candidates from a task. If the task is a moderation task, set mod=TRUE
 #' @param task The task id
 #' @param mod Is it a moderation task you want?
 #' @param connStr A connection string.
 #' @return A data frame with persons
 #' @examples
-#' getPersons('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')
+#' getPersonsFromTask('ee64c76a-5312-4e95-b315-ef5aca44539b',mod = TRUE, 'mongodb://')
 #' @export
 #' @import dplyr
 getPersonsFromTask <- function(task,mod=FALSE,connStr){
