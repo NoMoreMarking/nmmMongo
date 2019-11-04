@@ -99,6 +99,22 @@ getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
 
 #' Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.
 #'
+#' @param syllabus The syllabus id for the tasks required
+#' @param connStr A connection string.
+#' @return A data frame with task details.
+#' @examples
+#' getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://') will match all APW 2019 Year 3 tasks.
+#' @export
+getTasksBySyllabus <- function(syllabus,connStr){
+  tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
+  qryString <- paste0('{"syllabus":"',syllabus,'"}')
+  taskList <- tasksCollection$find(query = qryString, fields = '{"pugTemplate" : false, "owners": false, "reliabilities":false}')
+  tasks <- jsonlite::flatten(taskList)
+  return(tasks)
+}
+
+#' Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.
+#'
 #' @param taskName Tasks will be matched if their name includes the taskName string.
 #' @param connStr A connection string.
 #' @return A data frame with task details.
