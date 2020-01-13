@@ -205,6 +205,21 @@ excludeJudge <- function(judge_id,connStr){
   return (result)
 }
 
+#' Exclude a judge from a moderation task
+#'
+#' @param judge_id The judge id
+#' @param connStr A connection string.
+#' @return Nothing
+#' @examples
+#' excludeJudge('o544AXuwEBADM9Lrk', 'mongodb://')
+#' @export
+excludeJudgeMod <- function(judge_id,connStr){
+  judges <- mongolite::mongo('judges',url=connStr)
+  qry <- paste0('{"_id":"',judge_id,'"}')
+  result <- judges$update(query=qry, update='{"$set":{"excludeMod": "true"}}')
+  return (result)
+}
+
 #' Update anchor value for a person id
 #'
 #' @param id The person id
