@@ -97,6 +97,21 @@ getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
   return(judgeList)
 }
 
+#' Get syllabus ids from a syllabus name
+#'
+#' @param name The name for the syllabus
+#' @param connStr A connection string.
+#' @return A data frame with syllabus ids
+#' @examples
+#' getSyllabusByName('SACS', 'mongodb://') will match all SACS syllabuses.
+#' @export
+getSyllabusByName <- function(name,connStr){
+  syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
+  qryString <- paste0('{"name":{"$regex":"',name,'","$options":"i"}}')
+  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true}')
+  return(syllabusList)
+}
+
 #' Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.
 #'
 #' @param modCode The modCode for the tasks required
