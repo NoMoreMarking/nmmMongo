@@ -97,6 +97,25 @@ getJudges <- function(taskId,connStr,infit=0,comparisons=10000){
   return(judgeList)
 }
 
+#' Get school name from a dfe
+#'
+#' @param dfe The dfe for the school
+#' @param connStr A connection string.
+#' @return A data frame with syllabus ids
+#' @examples
+#' getSchoolByName(999999999990, 'mongodb://') will find the school with the dfe 999999999990.
+#' @export
+getSchoolByDfe <- function(dfe,connStr){
+  schoolsCollection <- mongolite::mongo(db='nmm-vegas-db',collection="schools",url=connStr)
+  qryString <- paste0('{"dfe":',dfe,'}')
+  school <- schoolsCollection$find(query = qryString,fields = '{"schoolName" : true}')
+  if(nrow(school)>0){
+    return(school$schoolName)
+  } else {
+    cat('no school found for that dfe') 
+  }
+}
+
 #' Get syllabus ids from a syllabus name
 #'
 #' @param name The name for the syllabus
