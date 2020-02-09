@@ -63,7 +63,7 @@ getJudges <- function(taskId,modTask=FALSE,connStr){
   } else {
     qryString <- paste0('{"localTask":"',taskId,'"}')
   }
-  judgeList <- judges$find(query = qryString)
+  judgeList <- judges$find(query = qryString,fields = '{"owners" : false, "timesTaken":false}')
   return(judgeList)
 }
 
