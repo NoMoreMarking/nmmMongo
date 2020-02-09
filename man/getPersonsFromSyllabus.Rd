@@ -2,7 +2,7 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{getPersonsFromSyllabus}
 \alias{getPersonsFromSyllabus}
-\title{Get persons from a task or tasks}
+\title{Get candidates from a syllabus}
 \usage{
 getPersonsFromSyllabus(syllabus, connStr)
 }
@@ -15,7 +15,7 @@ getPersonsFromSyllabus(syllabus, connStr)
 A data frame with persons
 }
 \description{
-Get persons from a task or tasks
+Get candidates from a syllabus
 }
 \examples{
 getPersonsFromSyllabus('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')

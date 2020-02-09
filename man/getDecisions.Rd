@@ -4,10 +4,10 @@
 \alias{getDecisions}
 \title{Get decisions from a task or tasks}
 \usage{
-getDecisions(taskName, connStr)
+getDecisions(taskId, connStr)
 }
 \arguments{
-\item{taskName}{The task name, tasks will be matched if their name includes the taskName string.}
+\item{taskId}{The task ID.}
 
 \item{connStr}{A connection string.}
 }
@@ -18,5 +18,5 @@ A data frame with decisions.
 Get decisions from a task or tasks
 }
 \examples{
-getDecisions('Sharing Standards 2017-2018 Year 3 9365206', 'mongodb://')
+getDecisions('67059790-569b-440f-a858-bddabf313e07', 'mongodb://')
 }

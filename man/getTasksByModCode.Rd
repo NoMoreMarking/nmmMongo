@@ -2,7 +2,7 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{getTasksByModCode}
 \alias{getTasksByModCode}
-\title{Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.}
+\title{Get task ids, names and number of decisions completed for tasks with a given moderation code}
 \usage{
 getTasksByModCode(modCode, connStr)
 }
@@ -15,7 +15,7 @@ getTasksByModCode(modCode, connStr)
 A data frame with task details.
 }
 \description{
-Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.
+Get task ids, names and number of decisions completed for tasks with a given moderation code
 }
 \examples{
 getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://') will match all APW 2019 Year 3 tasks.

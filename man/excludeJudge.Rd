@@ -4,10 +4,12 @@
 \alias{excludeJudge}
 \title{Exclude a judge from a task}
 \usage{
-excludeJudge(judge_id, connStr)
+excludeJudge(judge_id, modTask = FALSE, connStr)
 }
 \arguments{
 \item{judge_id}{The judge id}
+
+\item{modTask}{Is this a mod task, TRUE or FALSE?}
 
 \item{connStr}{A connection string.}
 }
@@ -18,5 +20,5 @@ Nothing
 Exclude a judge from a task
 }
 \examples{
-excludeJudge('o544AXuwEBADM9Lrk', 'mongodb://')
+excludeJudge('o544AXuwEBADM9Lrk', FALSE,'mongodb://')
 }

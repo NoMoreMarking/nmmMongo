@@ -2,16 +2,16 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{updateScaling}
 \alias{updateScaling}
-\title{Set scaling factors for tasks}
+\title{Set anchor scaling factors for tasks}
 \usage{
 updateScaling(task, uScale, uiMean, connStr)
 }
 \arguments{
 \item{task}{The task id}
 
-\item{uScale}{Scaling factor}
+\item{uScale}{Anchor scaling factor}
 
-\item{uiMean}{Mean of scale}
+\item{uiMean}{Mean of anchor scale}
 
 \item{connStr}{A connection string.}
 }
@@ -19,7 +19,7 @@ updateScaling(task, uScale, uiMean, connStr)
 Nothing
 }
 \description{
-Set scaling factors for tasks
+Set anchor scaling factors for tasks
 }
 \examples{
 updateScaling('FYB5kMkoh2v5sLsY7',6, 55, 'mongodb://')

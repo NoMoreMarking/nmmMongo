@@ -2,7 +2,7 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{getTasks}
 \alias{getTasks}
-\title{Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.}
+\title{Get task ids, names and number of decisions completed}
 \usage{
 getTasks(taskName, connStr)
 }
@@ -15,7 +15,7 @@ getTasks(taskName, connStr)
 A data frame with task details.
 }
 \description{
-Get task ids, names and number of decisions completed. Updated for nmm-vegas-db.
+Get task ids, names and number of decisions completed
 }
 \examples{
 getTasks('Sharing Standards 2017-2018 Year 5', 'mongodb://') will match all Year 5 tasks.

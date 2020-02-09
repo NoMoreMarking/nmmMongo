@@ -4,23 +4,22 @@
 \alias{getJudges}
 \title{Get judge details}
 \usage{
-getJudges(taskId, connStr, infit = 0, comparisons = 10000)
+getJudges(taskId, modTask = FALSE, connStr)
 }
 \arguments{
 \item{taskId}{Task Id}
 
+\item{modTask}{Is the task id a moderation task, TRUE or FALSE}
+
 \item{connStr}{A connection string.}
-
-\item{infit}{Only judges equal to or above this infit}
-
-\item{comparisons}{Only judges with equal of fewer than these comparisons}
 }
 \value{
-A data frame with user details.
+A data frame with judge details.
 }
 \description{
 Get judge details
 }
 \examples{
-getJudges('ocjZYZAYLuZJyAv4h', 'mongodb://')
+getJudges(localTask,modTask=FALSE,connStr)
+getJudges(modTask,modTask=TRUE,connStr)
 }
