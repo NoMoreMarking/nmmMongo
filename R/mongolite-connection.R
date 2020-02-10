@@ -165,9 +165,9 @@ excludeJudge <- function(judge_id,modTask=FALSE,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
   qry <- paste0('{"_id":"',judge_id,'"}')
   if(modTask){
-    result <- judges$update(query=qry, update='{"$set":{"excludeMod": "true"}}')
+    result <- judges$update(query=qry, update='{"$set":{"excludeMod": true}}')
   } else {
-    result <- judges$update(query=qry, update='{"$set":{"exclude": "true"}}')
+    result <- judges$update(query=qry, update='{"$set":{"exclude": true}}')
   }
   return (result)
 }
@@ -183,7 +183,7 @@ excludeJudge <- function(judge_id,modTask=FALSE,connStr){
 excludeJudgeMod <- function(judge_id,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
   qry <- paste0('{"_id":"',judge_id,'"}')
-  result <- judges$update(query=qry, update='{"$set":{"excludeMod": "true"}}')
+  result <- judges$update(query=qry, update='{"$set":{"excludeMod": true}}')
   return (result)
 }
 
