@@ -2,7 +2,7 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{getSchoolByDfe}
 \alias{getSchoolByDfe}
-\title{Get school name from a dfe}
+\title{Get school details from a dfe}
 \usage{
 getSchoolByDfe(dfe, connStr)
 }
@@ -12,10 +12,10 @@ getSchoolByDfe(dfe, connStr)
 \item{connStr}{A connection string.}
 }
 \value{
-A data frame with syllabus ids
+A data frame with school names and urns
 }
 \description{
-Get school name from a dfe
+Get school details from a dfe
 }
 \examples{
 getSchoolByName(999999999990, 'mongodb://') will find the school with the dfe 999999999990.
