@@ -403,3 +403,19 @@ getSales <- function(product,connStr){
   sales <- jsonlite::flatten(salesList)
   return(sales)
 }
+
+
+#' Get levels data
+#'
+#' @param task The task id
+#' @param connStr A connection string.
+#' @return data frame with the task levels
+#' @examples
+#' getLevels('74537cb5-d97e-4d48-b89a-97a81b91cd34','mongodb://')
+#' @export
+getLevels <- function(task,connStr){
+  levels <- mongolite::mongo(db='nmm-vegas-db',collection="levels",url=connStr)
+  qryString <- paste0('{"task":"',task,'"}')
+  levelsList <- levels$find(query = qryString)
+  return(levelsList)
+}
