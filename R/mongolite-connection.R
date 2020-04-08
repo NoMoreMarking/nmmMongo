@@ -145,10 +145,10 @@ getTasks <- function(taskName,connStr){
   tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
   qryString <- paste0('{"name":{"$regex":"',taskName,'","$options":"i"}}')
   taskList <- tasksCollection$find(query = qryString, fields = '{"pugTemplate" : false, "owners": false, "reliabilities":false}')
-  if(nrow(tasks)==0){
+  if(nrow(taskList)==0){
     cat('No tasks found for', taskName,'.\n')
   }
-  return(tasks)
+  return(taskList)
 }
 
 #' Exclude a judge from a task
