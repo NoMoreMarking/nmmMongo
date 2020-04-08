@@ -144,8 +144,7 @@ getTasksBySyllabus <- function(syllabus,connStr){
 getTasks <- function(taskName,connStr){
   tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
   qryString <- paste0('{"name":{"$regex":"',taskName,'","$options":"i"}}')
-  taskList <- tasksCollection$find(query = qryString)
-  tasks <- jsonlite::flatten(taskList)
+  taskList <- tasksCollection$find(query = qryString, fields = '{"pugTemplate" : false, "owners": false, "reliabilities":false}')
   if(nrow(tasks)==0){
     cat('No tasks found for', taskName,'.\n')
   }
