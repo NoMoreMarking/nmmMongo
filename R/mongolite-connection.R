@@ -287,6 +287,7 @@ getDecisions <- function(taskId, connStr) {
     },
     {
     "$project" : {
+    "decisionJudge._id":  1.0,
     "decisionJudge.email" : 1.0,
     "chosen" : 1.0,
     "notChosen" : 1.0,
@@ -311,6 +312,7 @@ getDecisions <- function(taskId, connStr) {
     },
     {
     "$project" : {
+    "decisionJudge._id":  1.0,
     "decisionJudge.email" : 1.0,
     "chosenCandidate.qrcode" : 1.0,
     "notChosen" : 1.0,
@@ -335,6 +337,7 @@ getDecisions <- function(taskId, connStr) {
     },
     {
     "$project" : {
+    "decisionJudge._id":  1.0,
     "decisionJudge.email" : 1.0,
     "chosenCandidate.qrcode" : 1.0,
     "notChosenCandidate.qrcode" : 1.0,
@@ -351,6 +354,7 @@ getDecisions <- function(taskId, connStr) {
   taskDecisions <- decisions$aggregate(pipeline,options = '{"allowDiskUse":true}')
   taskDecisions <- jsonlite::flatten(taskDecisions)
   taskDecisions <- taskDecisions %>% select(
+    judgeId = decisionJudge._id,
     judge = decisionJudge.email,
     chosen = chosenCandidate.qrcode,
     notChosen = notChosenCandidate.qrcode,
