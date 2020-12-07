@@ -356,6 +356,27 @@ getDecisions <- function(taskId, connStr) {
   return(taskDecisions)
 }
 
+#' Set syllabus for a task
+#'
+#' @param task The task id
+#' @param syllabus The syllabus id
+#' @param connStr A connection string.
+#' @return Nothing
+#' @examples
+#' updateSyllabus('FYB5kMkoh2v5sLsY7','FYB5kMkoh2v5sLsY8', 'mongodb://')
+#' @export
+updateSyllabus <- function(task,syllabus,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('{"_id":"',task,'"}')
+  updateStr <- paste0('{"$set":{"syllabus": "',syllabus,'"}}')
+  out <- tasks$update(pipeline, updateStr)
+  taskReturn <- tasks$find(query = pipeline, fields = '{"name" : true, "syllabus": true}')
+  syllabusCollection <- mongolite::mongo('syllabus', url=connStr)
+  syllabusReturn <- syllabusCollection$find(query=paste0('{"_id":"',syllabus,'"}'), fields = '{"name" : true}')
+  cat('Syllabus for ', taskReturn$name, ' set to ', syllabusReturn$name, '\n')
+  return (out)
+}
+
 #' Set anchor scaling factors for tasks
 #'
 #' @param task The task id
@@ -375,8 +396,8 @@ updateScaling <- function(task,uScale,uiMean,anchorScale=TRUE,connStr){
   } else {
     updateStr <- paste0('{"$set":{"scalingUScale": ',uScale,', "scalingUMean":',uiMean,'}}')
   }
-  tasks$update(pipeline, updateStr)
-  return (NULL)
+  out <- tasks$update(pipeline, updateStr)
+  return (out)
 }
 
 #' Get scaling factors for tasks

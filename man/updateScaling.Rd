@@ -4,7 +4,7 @@
 \alias{updateScaling}
 \title{Set anchor scaling factors for tasks}
 \usage{
-updateScaling(task, uScale, uiMean, connStr)
+updateScaling(task, uScale, uiMean, anchorScale = TRUE, connStr)
 }
 \arguments{
 \item{task}{The task id}
@@ -12,6 +12,8 @@ updateScaling(task, uScale, uiMean, connStr)
 \item{uScale}{Anchor scaling factor}
 
 \item{uiMean}{Mean of anchor scale}
+
+\item{anchorScale}{Anchor scaling or normal scaling?}
 
 \item{connStr}{A connection string.}
 }
@@ -22,5 +24,5 @@ Nothing
 Set anchor scaling factors for tasks
 }
 \examples{
-updateScaling('FYB5kMkoh2v5sLsY7',6, 55, 'mongodb://')
+updateScaling('FYB5kMkoh2v5sLsY7',6, 55, TRUE, 'mongodb://')
 }
