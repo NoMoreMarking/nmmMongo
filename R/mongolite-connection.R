@@ -361,15 +361,20 @@ getDecisions <- function(taskId, connStr) {
 #' @param task The task id
 #' @param uScale Anchor scaling factor
 #' @param uiMean Mean of anchor scale
+#' @param anchorScale Anchor scaling or normal scaling?
 #' @param connStr A connection string.
 #' @return Nothing
 #' @examples
-#' updateScaling('FYB5kMkoh2v5sLsY7',6, 55, 'mongodb://')
+#' updateScaling('FYB5kMkoh2v5sLsY7',6, 55, TRUE, 'mongodb://')
 #' @export
-updateScaling <- function(task,uScale,uiMean,connStr){
+updateScaling <- function(task,uScale,uiMean,anchorScale=TRUE,connStr){
   tasks <- mongolite::mongo('tasks',url=connStr)
   pipeline <- paste0('{"_id":"',task,'"}')
-  updateStr <- paste0('{"$set":{"anchorScalingUScale": ',uScale,', "anchorScalingUMean":',uiMean,'}}')
+  if(anchorScale){
+    updateStr <- paste0('{"$set":{"anchorScalingUScale": ',uScale,', "anchorScalingUMean":',uiMean,'}}')
+  } else {
+    updateStr <- paste0('{"$set":{"scalingUScale": ',uScale,', "scalingUMean":',uiMean,'}}')
+  }
   tasks$update(pipeline, updateStr)
   return (NULL)
 }
