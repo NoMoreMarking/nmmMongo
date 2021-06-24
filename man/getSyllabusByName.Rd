@@ -2,7 +2,7 @@
 % Please edit documentation in R/mongolite-connection.R
 \name{getSyllabusByName}
 \alias{getSyllabusByName}
-\title{Get syllabus ids from a syllabus name}
+\title{Get syllabus object from a syllabus name}
 \usage{
 getSyllabusByName(name, connStr)
 }
@@ -12,10 +12,10 @@ getSyllabusByName(name, connStr)
 \item{connStr}{A connection string.}
 }
 \value{
-A data frame with syllabus ids
+A data frame with syllabus object
 }
 \description{
-Get syllabus ids from a syllabus name
+Get syllabus object from a syllabus name
 }
 \examples{
 getSyllabusByName('SACS', 'mongodb://') will match all SACS syllabuses.

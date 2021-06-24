@@ -88,18 +88,46 @@ getSchoolByDfe <- function(dfe,connStr){
   }
 }
 
-#' Get syllabus ids from a syllabus name
+#' Get product from a product id
+#'
+#' @param id The id of the product
+#' @param connStr A connection string
+#' @export
+getProduct <- function(id, connStr){
+  productCollection <- mongolite::mongo(db='nmm-vegas-db',collection="products",url=connStr)
+  qryString <- paste0('{"_id":"',id,'"}')
+  productList <- productCollection$find(query=qryString, fields = '{"productName":true}',limit = 1)
+  if('productName' %in% names(productList)) return (productList$productName)
+  return(paste0('no product with id: ',id))
+}
+
+#' Get syllabus object from a syllabus name
 #'
 #' @param name The name for the syllabus
 #' @param connStr A connection string.
-#' @return A data frame with syllabus ids
+#' @return A data frame with syllabus object
 #' @examples
 #' getSyllabusByName('SACS', 'mongodb://') will match all SACS syllabuses.
 #' @export
 getSyllabusByName <- function(name,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
   qryString <- paste0('{"name":{"$regex":"',name,'","$options":"i"}}')
-  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true}')
+  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true}')
+  return(syllabusList)
+}
+
+#' Get syllabus object from a product name
+#'
+#' @param product The product for the syllabus
+#' @param connStr A connection string.
+#' @return A data frame with syllabus objects
+#' @examples
+#' getSyllabusByProduct('productid', 'mongodb://') will match all SACS syllabuses.
+#' @export
+getSyllabusByProduct <- function(product,connStr){
+  syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
+  qryString <- paste0('{"product":"',product,'"}')
+  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true}')
   return(syllabusList)
 }
 
@@ -188,6 +216,22 @@ excludeJudgeMod <- function(judge_id,connStr){
   return (result)
 }
 
+#' Re-include judges in a moderation task
+#'
+#' @param task The task id
+#' @param connStr A connection string.
+#' @return Records affected
+#' @examples
+#' resetModJudges('o544AXuwEBADM9Lrk', 'mongodb://')
+#' @export
+resetModJudges <- function(task,connStr){
+  judges <- mongolite::mongo('judges',url=connStr)
+  qry <- paste0('{"excludeMod" : true,"modTask":"',task,'"}')
+  result <- judges$update(query=qry, update='{"$set":{"excludeMod": false}}', multiple = TRUE)
+  return (result)
+}
+
+
 #' Set a moderation code for a task
 #'
 #' @param task The task id.
@@ -203,48 +247,6 @@ setModerationCode <- function(task,modCode,connStr){
   updateStr <- paste0('{"$set":{"modCode": "',modCode,'"}}')
   tasks$update(qry, updateStr)
   return(NULL)
-}
-
-#' Get candidates from a syllabus
-#'
-#' @param syllabus The task syllabus
-#' @param connStr A connection string.
-#' @return A data frame with persons
-#' @examples
-#' getPersonsFromSyllabus('ee64c76a-5312-4e95-b315-ef5aca44539b', 'mongodb://')
-#' @export
-#' @import dplyr
-getPersonsFromSyllabus <- function(syllabus, connStr){
-  tasks <- mongolite::mongo('tasks',url=connStr)
-  pipeline <- paste0('[{"$match" : {"syllabus" : "',syllabus,'"}},{"$lookup" : {"from" : "candidates", "localField" : "_id", "foreignField" : "localTask", "as" : "taskCandidates"}}, { "$unwind" : {"path" : "$taskCandidates"}},{"$project":{"taskCandidates" : 1.0}}, {"$project" : {"taskCandidates.owners" : 0.0,"taskCandidates.opponents":0.0,"taskCandidates.localOpponents":0.0,"taskCandidates.modOpponents":0.0,"taskCandidates.scans":0.0 }},{"$replaceRoot" : {"newRoot" : "$taskCandidates"}}]')
-  taskPersons <- tasks$aggregate(pipeline,options = '{"allowDiskUse":true}')
-  # dfe_str <- "[0-9]{7,12}"
-  # taskPersons <- taskPersons %>% mutate(
-  #   dfe = str_extract(taskName, dfe_str)  
-  # )
-  return(taskPersons)
-}
-
-#' Get candidates from a task or tasks
-#'
-#' @description Get the candidates from a task. If the task is a moderation task, set mod=TRUE
-#' @param task The task id
-#' @param mod Is it a moderation task you want?
-#' @param connStr A connection string.
-#' @return A data frame with persons
-#' @examples
-#' getPersonsFromTask('ee64c76a-5312-4e95-b315-ef5aca44539b',mod = TRUE, 'mongodb://')
-#' @export
-#' @import dplyr
-getPersonsFromTask <- function(task,mod=FALSE,connStr){
-  candidates <- mongolite::mongo('candidates',url=connStr)
-  if(!mod) {
-    qryString <- paste0('{"localTask":"',task,'"}')
-  } else {
-    qryString <- paste0('{"modTask":"',task,'"}')
-  }
-  taskPersons <- candidates$find(qryString, fields='{"owners" : 0.0,"opponents":0.0,"localOpponents":0.0,"modOpponents":0.0,"scans":0.0 }')
-  return(taskPersons)
 }
 
 #' Get decisions from a task or tasks
