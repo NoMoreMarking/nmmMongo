@@ -2,7 +2,7 @@
 % Please edit documentation in R/persons.R
 \name{setAsAnchor}
 \alias{setAsAnchor}
-\title{Update candidate anchor values}
+\title{Set candidate anchor values}
 \usage{
 setAsAnchor(firstName, lastName, modTask, theta, connStr)
 }
