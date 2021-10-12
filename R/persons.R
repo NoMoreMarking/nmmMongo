@@ -59,21 +59,3 @@ setAsAnchor <- function(firstName,lastName,modTask,theta, connStr){
   out <- candidates$update(pipeline, updateStr,multiple = FALSE)  
   return (out)
 }
-
-#' Update candidate anchor values
-#'
-#' @description Update anchor scores in a mod task
-#' @param id the id of the anchor
-#' @param theta the anchor value of the script
-#' @param connStr A connection string.
-#' @return the updated records
-#' @export
-#' 
-
-updateAnchor <- function(id, theta, connStr){
-  candidates <- mongolite::mongo('candidates',url=connStr)
-  pipeline <- paste0('{"_id":"',id,'"}')
-  updateStr <- paste0('{"$set":{ "anchorScore" : ',theta,'}}')
-  out <- candidates$update(pipeline, updateStr,multiple = FALSE)  
-  return (out)
-}
