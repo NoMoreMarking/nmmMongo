@@ -59,3 +59,20 @@ setAsAnchor <- function(firstName,lastName,modTask,theta, connStr){
   out <- candidates$update(pipeline, updateStr,multiple = FALSE)  
   return (out)
 }
+
+#' Get writing age look up table
+#'
+#' @description Get the writingAgeSet look up table
+#' @param writingAgeSet The writing age set
+#' @param connStr A connection string.
+#' @return The writing age set
+#' @examples
+#' getWritingAgeSet('KS3-2021-2022', 'mongodb://')
+#' @export
+#' @import dplyr
+getWritingAgeSet <- function(writingAgeSet,connStr){
+  scores <- mongolite::mongo('scaled.score.to.writing.age',url=connStr)
+  qryString <- paste0('{"writingAgeSet":"',writingAgeSet,'"}')
+  writingAges <- scores$find(qryString)
+  return(writingAges)
+}
