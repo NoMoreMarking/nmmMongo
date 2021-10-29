@@ -146,3 +146,21 @@ getTasks <- function(taskName,connStr){
   }
   return(taskList)
 }
+
+#' Get task object by id
+#'
+#' @param id The task id.
+#' @param connStr A connection string.
+#' @return A data frame with task details.
+#' @examples
+#' getTask('abc', 'mongodb://') will match task with id 'abc'
+#' @export
+getTaskById <- function(id,connStr){
+  tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
+  qryString <- paste0('{"_id":"',id,'"}')
+  taskList <- tasksCollection$find(query = qryString, fields = '{"pugTemplate" : false, "owners": false, "reliabilities":false}')
+  if(nrow(taskList)==0){
+    cat('No tasks found for', taskName,'.\n')
+  }
+  return(taskList)
+}
