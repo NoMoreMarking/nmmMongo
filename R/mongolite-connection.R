@@ -69,25 +69,6 @@ getJudges <- function(taskId,modTask=FALSE,connStr){
   return(judgeList)
 }
 
-#' Get school details from a dfe
-#'
-#' @param dfe The dfe for the school
-#' @param connStr A connection string.
-#' @return A data frame with school names and urns
-#' @examples
-#' getSchoolByName(999999999990, 'mongodb://') will find the school with the dfe 999999999990.
-#' @export
-getSchoolByDfe <- function(dfe,connStr){
-  schoolsCollection <- mongolite::mongo(db='nmm-vegas-db',collection="schools",url=connStr)
-  qryString <- paste0('{"dfe":',dfe,'}')
-  school <- schoolsCollection$find(query = qryString,fields = '{"schoolName" : true, "urn": true, "assemblySchoolSlug":true}')
-  if(nrow(school)>0){
-    return(school)
-  } else {
-    cat('no school found for that dfe') 
-  }
-}
-
 #' Get product from a product id
 #'
 #' @param id The id of the product
