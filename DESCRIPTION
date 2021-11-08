@@ -1,7 +1,7 @@
 Package: nmmMongo
 Type: Package
 Title: NMM Data into R
-Version: 6.6.0
+Version: 6.7.0
 Author: Chris Wheadon
 Maintainer: Chris Wheadon <chris@nomoremarking.com>
 Description: Imports NMM data directly into R
