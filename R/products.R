@@ -6,7 +6,7 @@
 getProduct <- function(id, connStr){
   productCollection <- mongolite::mongo(db='nmm-vegas-db',collection="products",url=connStr)
   qryString <- paste0('{"_id":"',id,'"}')
-  productList <- productCollection$find(query=qryString, fields = '{"productName":true}',limit = 1)
+  productList <- productCollection$find(query=qryString, fields = '{"emailContent":false, "sPoints": false}',limit = 1)
   if('productName' %in% names(productList)) return (productList)
   return(paste0('no product with id: ',id))
 }
