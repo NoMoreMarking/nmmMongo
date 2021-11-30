@@ -164,3 +164,37 @@ getTaskById <- function(id,connStr){
   }
   return(taskList)
 }
+
+
+#' Set anchor product for public anchor sets
+#'
+#' @param task The task id
+#' @param productName The product name
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' updateAnchorProduct('FYB5kMkoh2v5sLsY7','APW', 'mongodb://')
+#' @export
+updateAnchorProduct <- function(task,productName,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('{"_id":"',task,'"}')
+  updateStr <- paste0('{"$set":{"anchorProduct": "',productName,'"}}')
+  out <- tasks$update(pipeline, updateStr)
+  return (out)
+}
+
+#' Remove anchor product for public anchor sets
+#'
+#' @param task The task id
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' removeAnchorProduct('FYB5kMkoh2v5sLsY7','mongodb://')
+#' @export
+removeAnchorProduct <- function(task,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('{"_id":"',task,'"}')
+  updateStr <- paste0('{"$unset":{"anchorProduct": ""}}')
+  out <- tasks$update(pipeline, updateStr)
+  return (out)
+}
