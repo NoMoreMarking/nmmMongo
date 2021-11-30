@@ -198,3 +198,4 @@ removeAnchorProduct <- function(task,connStr){
   out <- tasks$update(pipeline, updateStr)
   return (out)
 }
+
