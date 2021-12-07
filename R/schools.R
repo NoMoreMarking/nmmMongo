@@ -59,14 +59,14 @@ getSchoolsByTrust <- function(trustName,productName,connStr){
 #'
 #' @param dfe The dfe for the school
 #' @param connStr A connection string.
-#' @return A data frame with school names and urns
+#' @return A data frame with school details
 #' @examples
 #' getSchoolByDfe(999999999990, 'mongodb://') will find the school with the dfe 999999999990.
 #' @export
 getSchoolByDfe <- function(dfe,connStr){
   schoolsCollection <- mongolite::mongo(db='nmm-vegas-db',collection="schools",url=connStr)
   qryString <- paste0('{"dfe":',dfe,'}')
-  school <- schoolsCollection$find(query = qryString,fields = '{"schoolName" : true, "urn": true, "assemblySchoolSlug":true}')
+  school <- schoolsCollection$find(query = qryString)
   if(nrow(school)>0){
     return(school)
   } else {
