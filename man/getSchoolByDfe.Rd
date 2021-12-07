@@ -12,7 +12,7 @@ getSchoolByDfe(dfe, connStr)
 \item{connStr}{A connection string.}
 }
 \value{
-A data frame with school names and urns
+A data frame with school details
 }
 \description{
 Get school details from a dfe
