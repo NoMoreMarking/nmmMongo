@@ -4,12 +4,12 @@
 \alias{getSyllabusByProduct}
 \title{Get syllabus object from a product name}
 \usage{
-getSyllabusByProduct(products, connStr)
+getSyllabusByProduct(product, connStr)
 }
 \arguments{
-\item{connStr}{A connection string.}
-
 \item{product}{The product for the syllabus}
+
+\item{connStr}{A connection string.}
 }
 \value{
 A data frame with syllabus objects

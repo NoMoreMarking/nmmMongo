@@ -21,7 +21,7 @@ getSyllabusByName <- function(name,connStr){
 #' @examples
 #' getSyllabusByProduct('productid', 'mongodb://') will match all SACS syllabuses.
 #' @export
-getSyllabusByProduct <- function(products,connStr){
+getSyllabusByProduct <- function(product,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
   qryString <- paste0('{"product":"',product,'"}')
   syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true}')
