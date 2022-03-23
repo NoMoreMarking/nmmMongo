@@ -98,14 +98,16 @@ getDecisions <- function(taskId, connStr) {
   )
   
   taskDecisions <- decisions$aggregate(pipeline,options = '{"allowDiskUse":true}')
-  taskDecisions <- jsonlite::flatten(taskDecisions)
-  taskDecisions <- taskDecisions %>% select(
-    judgeId = decisionJudge._id,
-    judge = decisionJudge.email,
-    chosen = chosenCandidate.qrcode,
-    notChosen = notChosenCandidate.qrcode,
-    timeTaken,
-    createdAt
-  )
+  if(nrow(taskDecisions)>0){
+    taskDecisions <- jsonlite::flatten(taskDecisions)
+    taskDecisions <- taskDecisions %>% select(
+      judgeId = decisionJudge._id,
+      judge = decisionJudge.email,
+      chosen = chosenCandidate.qrcode,
+      notChosen = notChosenCandidate.qrcode,
+      timeTaken,
+      createdAt
+    )  
+  }
   return(taskDecisions)
 }
