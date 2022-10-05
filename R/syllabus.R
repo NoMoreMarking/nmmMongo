@@ -8,7 +8,7 @@
 #' @export
 getSyllabusByName <- function(name,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
-  qryString <- paste0('{"name":{"$regex":"',name,'","$options":"i"}}')
+  qryString <- paste0('{"name":"',name,'"}')
   syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "writingAgeSet":true, "writingAge": true,"activeStart":true}')
   return(syllabusList)
 }
