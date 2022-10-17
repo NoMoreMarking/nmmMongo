@@ -183,6 +183,25 @@ updateAnchorProduct <- function(task,productName,connStr){
   return (out)
 }
 
+#' Update judge quota
+#'
+#' @param task The task id
+#' @param quota The default quota
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' updateDefaultJudgements('FYB5kMkoh2v5sLsY7',55, 'mongodb://')
+#' @export
+updateDefaultJudgements <- function(task,quota,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('{"_id":"',task,'"}')
+  updateStr <- paste0('{"$set":{"defaultJudgements": ',quota,'}}')
+  out <- tasks$update(pipeline, updateStr)
+  return (out)
+}
+
+
+
 #' Remove anchor product for public anchor sets
 #'
 #' @param task The task id
