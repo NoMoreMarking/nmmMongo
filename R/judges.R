@@ -39,7 +39,8 @@ getJudgesBySyllabus <- function(syllabus, connStr){
   "taskJudges._medianTimeTaken" : 1.0, 
   "taskJudges._perLeft" : 1.0,
   "taskJudges.excludeMod" : 1.0,
-  "taskJudges.exclude" : 1.0
+  "taskJudges.exclude" : 1.0,
+  "taskJudges.quota" : 1.0
   }
   }
   ]')
