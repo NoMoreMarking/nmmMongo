@@ -119,3 +119,20 @@ resetModJudges <- function(task,connStr){
   result <- judges$update(query=qry, update='{"$set":{"excludeMod": false}}', multiple = TRUE)
   return (result)
 }
+
+#' Update an individual judge quota
+#'
+#' @param judge The judge id
+#' @param quota The new quota
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' updateJudgeQuota('ad888bb7-e47a-4e6b-b827-1498c752a389',55, 'mongodb://')
+#' @export
+updateJudgeQuota <- function(judge,quota,connStr){
+  judges <- mongolite::mongo('judges',url=connStr)
+  pipeline <- paste0('{"_id":"',judge,'"}')
+  updateStr <- paste0('{"$set":{"quota": ',quota,'}}')
+  out <- tasks$update(pipeline, updateStr)
+  return (out)
+}
