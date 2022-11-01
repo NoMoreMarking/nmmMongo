@@ -27,3 +27,24 @@ getSyllabusByProduct <- function(product,connStr){
   syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "activeStart":true}')
   return(syllabusList)
 }
+
+#' Set ready for judging on a syllabus
+#'
+#' @param syllabus The syllabus id
+#' @param ready Set ready or not. Boolean.
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' setSyllabusReadyForJudging('ad888bb7-e47a-4e6b-b827-1498c752a389',TRUE, 'mongodb://')
+#' @export
+setSyllabusReadyForJudging <- function(syllabus,ready,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('{"syllabus":"',syllabus,'"}')
+  if(ready){
+    updateStr <- paste0('{"$set":{"readyForJudging": "',lubridate::today(),'"}}')  
+  } else {
+    updateStr <- '{"$unset" : {"readyForJudging":""}}'
+  }
+  out <- tasks$update(pipeline, updateStr,multiple = TRUE)
+  return (out)
+}
