@@ -133,6 +133,6 @@ updateJudgeQuota <- function(judge,quota,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
   pipeline <- paste0('{"_id":"',judge,'"}')
   updateStr <- paste0('{"$set":{"quota": ',quota,'}}')
-  out <- tasks$update(pipeline, updateStr)
+  out <- judges$update(pipeline, updateStr)
   return (out)
 }
