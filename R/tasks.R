@@ -200,6 +200,23 @@ updateDefaultJudgements <- function(task,quota,connStr){
   return (out)
 }
 
+#' Update anchor constant
+#'
+#' @param modTask The mod task id
+#' @param shiftConstant The shift constant
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' updateShiftConstant('FYB5kMkoh2v5sLsY7',3, 'mongodb://')
+#' @export
+updateShiftConstant <- function(modTask,shiftConstant,connStr){
+  tasks <- mongolite::mongo('tasks',url=connStr)
+  pipeline <- paste0('{"_id":"',modTask,'"}')
+  updateStr <- paste0('{"$set":{"shiftConstant": ',shiftConstant,',"useAnchors" : true}}')
+  out <- tasks$update(pipeline, updateStr)
+  return (out)
+}
+
 
 
 #' Remove anchor product for public anchor sets
