@@ -60,6 +60,26 @@ setAsAnchor <- function(firstName,lastName,modTask,theta, connStr){
   return (out)
 }
 
+#' Unset anchors in a mod task
+#'
+#' @description Set anchor = false for all candidates in a mod task
+#' @param modTask the name of the mod task
+#' @param connStr A connection string.
+#' @return the updated records
+#' @export
+#' 
+
+# Unset anchors
+unsetModAnchors <- function(modTask,connStr){
+  candidates <- mongolite::mongo('candidates',url=connStr)
+  pipeline <- paste0('{"modTask":"',modTask,'"}')
+  updateStr <- paste0('{"$set":{ "anchor" : false}}')
+  out <- candidates$update(pipeline, updateStr,multiple = TRUE)  
+  return (out)
+}
+
+
+
 #' Get writing age look up table
 #'
 #' @description Get the writingAgeSet look up table
