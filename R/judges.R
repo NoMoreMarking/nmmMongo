@@ -136,3 +136,20 @@ updateJudgeQuota <- function(judge,quota,connStr){
   out <- judges$update(pipeline, updateStr)
   return (out)
 }
+
+#' Get judge comments
+#'
+#' @param tasks A vector of tasks
+#' @param connStr A connection string.
+#' @return A data frame with comments
+#' @examples
+#' getJudgeComments(tasks,connStr)
+#' @export
+getJudgeComments <- function(tasks,connStr){
+  judges <- mongolite::mongo(db='nmm-vegas-db',collection="judge.comments",url=connStr)
+  taskStr <- paste(shQuote(tasks, type="cmd"), collapse=", ")
+  qryString <- paste0('{"task": {"$in":[',taskStr,']}}')
+  comments <- judges$find(query = qryString)
+  return(comments)
+}
+
