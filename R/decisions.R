@@ -106,6 +106,7 @@ getDecisions <- function(taskId, connStr) {
       chosen = chosenCandidate.qrcode,
       notChosen = notChosenCandidate.qrcode,
       timeTaken,
+      isLeft,
       createdAt
     )  
   }
