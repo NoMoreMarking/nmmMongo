@@ -3,6 +3,7 @@
 export(excludeJudge)
 export(excludeJudgeMod)
 export(getDecisions)
+export(getJudgeComments)
 export(getJudges)
 export(getJudgesBySyllabus)
 export(getLevels)
