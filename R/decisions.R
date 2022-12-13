@@ -147,5 +147,20 @@ resetDecisions <- function(task, connStr){
 }
 
 
-
+#' Exclude decisions from a task
+#' @param decisions A vector of decision ids.
+#' @param connStr A connection string.
+#' @return updated count
+#' @export
+#' @import mongolite
+#' @import tidyr
+#' 
+#' 
+excludeDecisions <- function(decisions, connStr){
+  decisionStr <- paste(decisions,collapse='","')
+  decisions <- mongolite::mongo('decisions',url=connStr)
+  qry <- paste0('{"_id" : {"$in" : ["',decisionStr,'"]}}')
+  result <- decisions$update(query=qry, update='{"$set":{"exclude": true}}')
+  return (result)
+}
 
