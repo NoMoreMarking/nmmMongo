@@ -101,6 +101,7 @@ getDecisions <- function(taskId, connStr) {
   if(nrow(taskDecisions)>0){
     taskDecisions <- jsonlite::flatten(taskDecisions)
     taskDecisions <- taskDecisions %>% select(
+      id = `_id`,
       judgeId = decisionJudge._id,
       judge = decisionJudge.email,
       chosen = chosenCandidate.qrcode,
@@ -112,3 +113,39 @@ getDecisions <- function(taskId, connStr) {
   }
   return(taskDecisions)
 }
+
+#' Exclude a decision from a task
+#' @param decision A decision id.
+#' @param connStr A connection string.
+#' @return updated count
+#' @export
+#' @import mongolite
+#' @import tidyr
+#' 
+#' 
+excludeDecision <- function(decision, connStr){
+  decisions <- mongolite::mongo('decisions',url=connStr)
+  qry <- paste0('{"_id":"',decision,'"}')
+  result <- decisions$update(query=qry, update='{"$set":{"exclude": true}}')
+  return (result)
+}
+
+#' Re-include all decisions from a task
+#' @param task The task id
+#' @param connStr A connection string.
+#' @return updated count
+#' @export
+#' @import mongolite
+#' @import tidyr
+#' 
+#' 
+resetDecisions <- function(task, connStr){
+  decisions <- mongolite::mongo('decisions',url=connStr)
+  qry <- paste0('{"task":"',task,'"}')
+  result <- decisions$update(query=qry, update='{"$unset":{"exclude": ""}}', multiple=TRUE)
+  return (result)
+}
+
+
+
+
