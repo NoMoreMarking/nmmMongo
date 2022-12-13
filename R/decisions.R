@@ -40,7 +40,8 @@ getDecisions <- function(taskId, connStr) {
     "timeTaken" : 1.0,
     "isLeft" : 1.0,
     "isExternal" : 1.0,
-    "createdAt" : 1.0
+    "createdAt" : 1.0,
+    "exclude" : 1.0
     }
     },
     {
@@ -65,7 +66,8 @@ getDecisions <- function(taskId, connStr) {
     "timeTaken" : 1.0,
     "isLeft" : 1.0,
     "isExternal" : 1.0,
-    "createdAt" : 1.0
+    "createdAt" : 1.0,
+    "exclude" : 1.0
     }
     },
     {
@@ -90,7 +92,8 @@ getDecisions <- function(taskId, connStr) {
     "timeTaken" : 1.0,
     "isLeft" : 1.0,
     "isExternal" : 1.0,
-    "createdAt" : 1.0
+    "createdAt" : 1.0,
+    "exclude" : 1.0
     }
     }
     ]
@@ -108,7 +111,8 @@ getDecisions <- function(taskId, connStr) {
       notChosen = notChosenCandidate.qrcode,
       timeTaken,
       isLeft,
-      createdAt
+      createdAt,
+      exclude
     )  
   }
   return(taskDecisions)
