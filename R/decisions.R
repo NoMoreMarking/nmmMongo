@@ -160,7 +160,7 @@ excludeDecisions <- function(decisions, connStr){
   decisionStr <- paste(decisions,collapse='","')
   decisions <- mongolite::mongo('decisions',url=connStr)
   qry <- paste0('{"_id" : {"$in" : ["',decisionStr,'"]}}')
-  result <- decisions$update(query=qry, update='{"$set":{"exclude": true}}')
+  result <- decisions$update(query=qry, update='{"$set":{"exclude": true}}', multiple=TRUE)
   return (result)
 }
 
