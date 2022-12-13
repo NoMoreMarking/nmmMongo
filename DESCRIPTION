@@ -1,13 +1,13 @@
 Package: nmmMongo
 Type: Package
 Title: NMM Data into R
-Version: 7.3.0
+Version: 7.4.0
 Author: Chris Wheadon
 Maintainer: Chris Wheadon <chris@nomoremarking.com>
 Description: Imports NMM data directly into R
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Imports:
     jsonlite,
     tidyverse,
