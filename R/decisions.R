@@ -103,7 +103,7 @@ getDecisions <- function(taskId, connStr) {
   taskDecisions <- decisions$aggregate(pipeline,options = '{"allowDiskUse":true}')
   if(nrow(taskDecisions)>0){
     taskDecisions <- jsonlite::flatten(taskDecisions)
-    taskDecisions <- taskDecisions %>% select(
+    taskDecisions <- taskDecisions %>% select(any_of(c(
       id = `_id`,
       judgeId = decisionJudge._id,
       judge = decisionJudge.email,
@@ -113,7 +113,7 @@ getDecisions <- function(taskId, connStr) {
       isLeft,
       createdAt,
       exclude
-    )  
+    )))
   }
   return(taskDecisions)
 }
