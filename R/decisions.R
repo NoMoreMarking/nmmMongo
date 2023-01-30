@@ -104,15 +104,15 @@ getDecisions <- function(taskId, connStr) {
   if(nrow(taskDecisions)>0){
     taskDecisions <- jsonlite::flatten(taskDecisions)
     taskDecisions <- taskDecisions %>% select(any_of(c(
-      id = `_id`,
-      judgeId = decisionJudge._id,
-      judge = decisionJudge.email,
-      chosen = chosenCandidate.qrcode,
-      notChosen = notChosenCandidate.qrcode,
-      timeTaken,
-      isLeft,
-      createdAt,
-      exclude
+      "id"= "_id",
+      "judgeId"="decisionJudge._id",
+      "judge"="decisionJudge.email",
+      "chosen"="chosenCandidate.qrcode",
+      "notChosen"="notChosenCandidate.qrcode",
+      "timeTaken",
+      "isLeft",
+      "createdAt",
+      "exclude"
     )))
   }
   return(taskDecisions)
