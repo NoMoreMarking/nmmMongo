@@ -78,7 +78,23 @@ unsetModAnchors <- function(modTask,connStr){
   return (out)
 }
 
+#' Update the mark property of a candidate
+#' 
+#' @description Update the mark property of a candidate
+#' @param candidateId The id of the candidate
+#' @param mark The mark to set
+#' @param connStr A connection string.
+#' @return The updated record
+#' @export
 
+# Update the mark property of a candidate
+updateMark <- function(candidateId, mark, connStr){
+  candidates <- mongolite::mongo('candidates',url=connStr)
+  pipeline <- paste0('{"_id":"',candidateId,'"}')
+  updateStr <- paste0('{"$set":{ "mark" : ',mark,'}}')
+  out <- candidates$update(pipeline, updateStr,multiple = FALSE)  
+  return (out)
+}
 
 #' Get writing age look up table
 #'
