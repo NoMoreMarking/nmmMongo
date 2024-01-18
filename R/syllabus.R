@@ -4,7 +4,7 @@
 #' @param connStr A connection string.
 #' @return A data frame with syllabus object
 #' @examples
-#' getSyllabusByName('SACS', 'mongodb://') will match all SACS syllabuses.
+#' getSyllabusByName('SACS', 'mongodb://') 
 #' @export
 getSyllabusByName <- function(name,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
@@ -19,7 +19,7 @@ getSyllabusByName <- function(name,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with syllabus objects
 #' @examples
-#' getSyllabusByProduct('productid', 'mongodb://') will match all SACS syllabuses.
+#' getSyllabusByProduct('productid', 'mongodb://') 
 #' @export
 getSyllabusByProduct <- function(product,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)

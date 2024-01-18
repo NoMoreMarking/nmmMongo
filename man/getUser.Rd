@@ -18,5 +18,5 @@ A data frame with user details
 Get user details from an auth string
 }
 \examples{
-getUser("auth0|607457cfe1af3d0072229628", 'mongodb://') will find the user with the auth 'auth0|607457cfe1af3d0072229628'
+getUser("auth0|607457cfe1af3d0072229628", 'mongodb://') 
 }

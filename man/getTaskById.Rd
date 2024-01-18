@@ -18,5 +18,5 @@ A data frame with task details.
 Get task object by id
 }
 \examples{
-getTask('abc', 'mongodb://') will match task with id 'abc'
+getTask('abc', 'mongodb://')
 }

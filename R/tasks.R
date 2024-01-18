@@ -103,7 +103,7 @@ getScaling <- function(task,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with task details.
 #' @examples
-#' getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://') will match all APW 2019 Year 3 tasks.
+#' getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://')
 #' @export
 getTasksByModCode <- function(modCode,connStr){
   tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
@@ -119,7 +119,7 @@ getTasksByModCode <- function(modCode,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with task details.
 #' @examples
-#' getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://') will match all APW 2019 Year 3 tasks.
+#' getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://') 
 #' @export
 getTasksBySyllabus <- function(syllabus,connStr){
   tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
@@ -135,7 +135,7 @@ getTasksBySyllabus <- function(syllabus,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with task details.
 #' @examples
-#' getTasks('Sharing Standards 2017-2018 Year 5', 'mongodb://') will match all Year 5 tasks.
+#' getTasks('Sharing Standards 2017-2018 Year 5', 'mongodb://') 
 #' @export
 getTasks <- function(taskName,connStr){
   tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)
@@ -153,7 +153,7 @@ getTasks <- function(taskName,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with task details.
 #' @examples
-#' getTask('abc', 'mongodb://') will match task with id 'abc'
+#' getTask('abc', 'mongodb://')
 #' @export
 getTaskById <- function(id,connStr){
   tasksCollection <- mongolite::mongo(db='nmm-vegas-db',collection="tasks",url=connStr)

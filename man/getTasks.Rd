@@ -18,5 +18,5 @@ A data frame with task details.
 Get task ids, names and number of decisions completed
 }
 \examples{
-getTasks('Sharing Standards 2017-2018 Year 5', 'mongodb://') will match all Year 5 tasks.
+getTasks('Sharing Standards 2017-2018 Year 5', 'mongodb://') 
 }

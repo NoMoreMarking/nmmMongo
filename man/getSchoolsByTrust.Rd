@@ -20,5 +20,5 @@ A data frame with school dfes
 Get list of schools in a trust by trust and product name
 }
 \examples{
-getSchoolsByTrust('Central South', 'mongodb://') will return the schools with the trust Central South
+getSchoolsByTrust('Central South', 'mongodb://') 
 }

@@ -5,7 +5,7 @@
 #' @param connStr A connection string.
 #' @return A data frame with user details
 #' @examples
-#' getUser("auth0|607457cfe1af3d0072229628", 'mongodb://') will find the user with the auth 'auth0|607457cfe1af3d0072229628'
+#' getUser("auth0|607457cfe1af3d0072229628", 'mongodb://') 
 #' @export
 getUser <- function(auth,connStr){
   userCollection <- mongolite::mongo(db='nmm-vegas-db',collection="user.personals",url=connStr)

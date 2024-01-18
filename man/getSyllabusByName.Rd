@@ -18,5 +18,5 @@ A data frame with syllabus object
 Get syllabus object from a syllabus name
 }
 \examples{
-getSyllabusByName('SACS', 'mongodb://') will match all SACS syllabuses.
+getSyllabusByName('SACS', 'mongodb://') 
 }

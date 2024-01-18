@@ -18,5 +18,5 @@ A data frame with task details.
 Get task ids, names and number of decisions completed
 }
 \examples{
-getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://') will match all APW 2019 Year 3 tasks.
+getTasks('7e606c3c-8e33-4c11-801f-6d168d79a869', 'mongodb://') 
 }

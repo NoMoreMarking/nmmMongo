@@ -18,5 +18,5 @@ A data frame with school details
 Get school details from a dfe
 }
 \examples{
-getSchoolByDfe(999999999990, 'mongodb://') will find the school with the dfe 999999999990.
+getSchoolByDfe(999999999990, 'mongodb://')
 }

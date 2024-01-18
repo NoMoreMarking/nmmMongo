@@ -6,7 +6,7 @@
 #' @param connStr A connection string
 #' @return A data frame with school dfes
 #' @examples
-#' getSchoolsByTrust('Central South', 'mongodb://') will return the schools with the trust Central South
+#' getSchoolsByTrust('Central South', 'mongodb://') 
 #' @export
 getSchoolsByTrust <- function(trustName,productName,connStr){
   matsCollection <- mongolite::mongo(db='nmm-vegas-db',collection="mats",url=connStr)
@@ -61,7 +61,7 @@ getSchoolsByTrust <- function(trustName,productName,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with school details
 #' @examples
-#' getSchoolByDfe(999999999990, 'mongodb://') will find the school with the dfe 999999999990.
+#' getSchoolByDfe(999999999990, 'mongodb://')
 #' @export
 getSchoolByDfe <- function(dfe,connStr){
   schoolsCollection <- mongolite::mongo(db='nmm-vegas-db',collection="schools",url=connStr)
