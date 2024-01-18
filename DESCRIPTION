@@ -12,7 +12,8 @@ Imports:
     jsonlite,
     tidyverse,
     stringr,
-    lubridate
+    lubridate,
+    jsonlite
 License: MIT + file LICENSE
 Depends: 
     mongolite,
