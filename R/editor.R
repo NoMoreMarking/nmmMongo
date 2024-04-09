@@ -16,3 +16,19 @@ getEditor <- function(task,connStr){
   contents <- editor$find(query = qry,fields = '{"_id" : true, "html":true}')
   return(contents)
 }
+
+#' Get texts from responses
+#'
+#' @param ids A vector of tasks
+#' @param connStr A connection string.
+#' @return A data frame with comments
+#' @examples
+#' getPersonTexts(ids,connStr)
+#' @export
+getPersonTexts <- function(ids,connStr){
+  editor <- mongolite::mongo(db='nmm-vegas-db',collection="editor.contents",url=connStr)
+  idStr <- paste(shQuote(ids, type="cmd"), collapse=", ")
+  qryString <- paste0('{"_id": {"$in":[',idStr,']}}')
+  texts <- editor$find(query = qryString,fields = '{"_id" : true, "html":true, "wordCount": true, "submitted": true}')
+  return(texts)
+}
