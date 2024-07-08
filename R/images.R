@@ -9,7 +9,7 @@
 getImages <- function(task,connStr){
   scansCollection <- mongolite::mongo(db='nmm-vegas-db',collection="scans.Pages",url=connStr)
   qryString <- paste0('{"task":"',task,'"}')
-  imageList <- scansCollection$find(query = qryString,fields = '{"qrcode" : true, "url":true, "thumbnail0": true, "createdAt":true}')
+  imageList <- scansCollection$find(query = qryString,fields = '{"qrcode" : true, "url":true, "thumbnail0": true, "pdfpage":true, createdAt":true}')
   if(nrow(imageList)==0){
     cat('No images found for', task,'.\n')
   }
