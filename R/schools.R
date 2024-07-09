@@ -87,7 +87,7 @@ getTrusts <- function(product,connStr){
   qryString <- paste0('{"product":"',product,'"}')
   trusts <- matCollection$find(query = qryString,fields = '{"schools" : true, "name":true}')
   if(nrow(trusts)>0){
-    return(mats)
+    return(trusts)
   } else {
     cat('no school found for that dfe') 
   }
