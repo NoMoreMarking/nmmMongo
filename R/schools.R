@@ -74,3 +74,23 @@ getSchoolByDfe <- function(dfe,connStr){
   }
 }
 
+#' Get trusts for a product
+#'
+#' @param product The product id
+#' @param connStr A connection string.
+#' @return A data frame with trust schools
+#' @examples
+#' getTrusts("abc", 'mongodb://')
+#' @export
+getTrusts <- function(product,connStr){
+  matCollection <- mongolite::mongo(db='nmm-vegas-db',collection="mats",url=connStr)
+  qryString <- paste0('{"product":"',product,'"}')
+  trusts <- matCollection$find(query = qryString,fields = '{"schools" : true, "name":true}')
+  if(nrow(trusts)>0){
+    return(mats)
+  } else {
+    cat('no school found for that dfe') 
+  }
+}
+
+
