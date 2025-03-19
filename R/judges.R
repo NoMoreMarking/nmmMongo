@@ -153,3 +153,18 @@ getJudgeComments <- function(tasks,connStr){
   return(comments)
 }
 
+#' Get audio transcripts
+#'
+#' @param tasks A vector of tasks
+#' @param connStr A connection string.
+#' @return A data frame with audio transcripts
+#' @examples
+#' getAudioTranscripts(tasks,connStr)
+#' @export
+getAudioTranscripts <- function(tasks,connStr){
+  audio <- mongolite::mongo(db='nmm-vegas-db',collection="audio.transcripts",url=connStr)
+  taskStr <- paste(shQuote(tasks, type="cmd"), collapse=", ")
+  qryString <- paste0('{"task": {"$in":[',taskStr,']}}')
+  transcripts <- audio$find(query = qryString)
+  return(transcripts)
+}

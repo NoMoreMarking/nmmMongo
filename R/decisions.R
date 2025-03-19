@@ -41,7 +41,8 @@ getDecisions <- function(taskId, connStr) {
     "isLeft" : 1.0,
     "isExternal" : 1.0,
     "createdAt" : 1.0,
-    "exclude" : 1.0
+    "exclude" : 1.0,
+    "autoAdded" : 1.0
     }
     },
     {
@@ -67,7 +68,8 @@ getDecisions <- function(taskId, connStr) {
     "isLeft" : 1.0,
     "isExternal" : 1.0,
     "createdAt" : 1.0,
-    "exclude" : 1.0
+    "exclude" : 1.0,
+    "autoAdded" : 1.0
     }
     },
     {
@@ -93,7 +95,8 @@ getDecisions <- function(taskId, connStr) {
     "isLeft" : 1.0,
     "isExternal" : 1.0,
     "createdAt" : 1.0,
-    "exclude" : 1.0
+    "exclude" : 1.0,
+    "autoAdded" : 1.0
     }
     }
     ]
