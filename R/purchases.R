@@ -20,7 +20,8 @@ getPurchaseByProduct <- function(id, connStr){
   purchaseCollection <- mongolite::mongo(db='nmm-vegas-db',collection="purchases",url=connStr)
   qryString <- paste0('{"product":"',id,'"}')
   purchase <- purchaseCollection$find(query=qryString)
-  purchase <- purchase %>% select(-c(migrated,ygs,pop,Xwithdrawn))
+  purchase <- purchase %>% 
+    select(-any_of(c("migrated", "ygs", "pop", "Xwithdrawn")))
   if(nrow(purchase)>0) return (purchase)
   return(paste0('no purchase with product id: ',id))
 }
