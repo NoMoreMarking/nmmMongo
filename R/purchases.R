@@ -7,6 +7,8 @@ getPurchase <- function(id, connStr){
   purchaseCollection <- mongolite::mongo(db='nmm-vegas-db',collection="purchases",url=connStr)
   qryString <- paste0('{"_id":"',id,'"}')
   purchase <- purchaseCollection$find(query=qryString)
+  purchase <- purchase %>%
+    select(-any_of(c("migrated", "ygs", "pop", "Xwithdrawn")))
   if(nrow(purchase>0)) return (purchase)
   return(paste0('no purchase with id: ',id))
 }
