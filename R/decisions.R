@@ -167,3 +167,22 @@ excludeDecisions <- function(decisions, connStr){
   return (result)
 }
 
+#' Recode AI decisions as human decisions
+#' @param task The task id
+#' @param connStr A connection string.
+#' @return updated count
+#' @export
+#' @import mongolite
+#' @import tidyr
+#' 
+#' 
+humaniseDecisions <- function(task, connStr){
+  decisions <- mongolite::mongo('decisions',url=connStr)
+  qry <- paste0('{"task":"',task,'"}')
+  result <- decisions$update(query=qry, update='{"$unset":{"autoAdded": ""}}', multiple=TRUE)
+  return (result)
+}
+
+
+
+
