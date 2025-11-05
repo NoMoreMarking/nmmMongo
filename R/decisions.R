@@ -183,6 +183,22 @@ humaniseDecisions <- function(task, connStr){
   return (result)
 }
 
+#' Recode AI decisions as robot decisions
+#' @param task The task id
+#' @param connStr A connection string.
+#' @return updated count
+#' @export
+#' @import mongolite
+#' @import tidyr
+#' 
+#' 
+robotiseDecisions <- function(task, connStr){
+  decisions <- mongolite::mongo('decisions',url=connStr)
+  qry <- paste0('{"task":"',task,'"}')
+  result <- decisions$update(query=qry, update='{"$set":{"autoAdded": true}}', multiple=TRUE)
+  return (result)
+}
+
 
 
 
