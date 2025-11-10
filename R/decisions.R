@@ -106,7 +106,7 @@ getDecisions <- function(taskId, connStr) {
   taskDecisions <- decisions$aggregate(pipeline,options = '{"allowDiskUse":true}')
   if(nrow(taskDecisions)>0){
     taskDecisions <- jsonlite::flatten(taskDecisions)
-    taskDecisions <- taskDecisions %>% rename(
+    taskDecisions <- taskDecisions %>% dplyr::rename(
       "id"= "_id",
       "judgeId"="decisionJudge._id",
       "judge"="decisionJudge.email",
