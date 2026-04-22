@@ -1,9 +1,12 @@
 #' Get the contents of the editor
 #'
-#' @param task Task Id
+#' @param task Task id
+#' @param connStr A connection string.
 #' @return A data frame with the contents of the editor
 #' @examples
-#' getEditor(localTask,connStr)
+#' \dontrun{
+#' getEditor(localTask, connStr)
+#' }
 #' @export
 
 getEditor <- function(task,connStr){
@@ -23,7 +26,9 @@ getEditor <- function(task,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with comments
 #' @examples
-#' getPersonTexts(ids,connStr)
+#' \dontrun{
+#' getPersonTexts(ids, connStr)
+#' }
 #' @export
 getPersonTexts <- function(ids,connStr){
   editor <- mongolite::mongo(db='nmm-vegas-db',collection="editor.contents",url=connStr)

@@ -18,5 +18,7 @@ A data frame with comments
 Get texts from responses
 }
 \examples{
-getPersonTexts(ids,connStr)
+\dontrun{
+getPersonTexts(ids, connStr)
+}
 }

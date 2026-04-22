@@ -7,7 +7,9 @@
 getEditor(task, connStr)
 }
 \arguments{
-\item{task}{Task Id}
+\item{task}{Task id}
+
+\item{connStr}{A connection string.}
 }
 \value{
 A data frame with the contents of the editor
@@ -16,5 +18,7 @@ A data frame with the contents of the editor
 Get the contents of the editor
 }
 \examples{
-getEditor(localTask,connStr)
+\dontrun{
+getEditor(localTask, connStr)
+}
 }

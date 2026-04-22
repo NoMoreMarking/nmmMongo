@@ -18,5 +18,7 @@ data frame with the task levels
 Get levels data
 }
 \examples{
-getLevels('74537cb5-d97e-4d48-b89a-97a81b91cd34','mongodb://')
+\dontrun{
+getLevels('74537cb5-d97e-4d48-b89a-97a81b91cd34', 'mongodb://localhost')
+}
 }

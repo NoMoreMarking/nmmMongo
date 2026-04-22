@@ -7,9 +7,9 @@
 getSales(product, connStr)
 }
 \arguments{
-\item{connStr}{A connection string.}
+\item{product}{The product id}
 
-\item{project}{The project id}
+\item{connStr}{A connection string.}
 }
 \value{
 data frame product data
@@ -18,5 +18,7 @@ data frame product data
 Get sales data
 }
 \examples{
-getSales('vqPwL2wWX8qc26nWs','mongodb://')
+\dontrun{
+getSales('vqPwL2wWX8qc26nWs', 'mongodb://localhost')
+}
 }

@@ -18,5 +18,7 @@ A data frame with comments
 Get judge comments
 }
 \examples{
+\dontrun{
 getJudgeComments(tasks,connStr)
+}
 }

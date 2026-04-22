@@ -18,5 +18,7 @@ A data frame with judge details.
 Get judges for a syllabus
 }
 \examples{
+\dontrun{
 getJudgesBySyllabus(syllabusid, 'mongodb://')
+}
 }

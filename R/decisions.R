@@ -4,7 +4,9 @@
 #' @param connStr A connection string.
 #' @return A data frame with decisions.
 #' @examples
-#' getDecisions('67059790-569b-440f-a858-bddabf313e07', 'mongodb://')
+#' \dontrun{
+#' getDecisions('67059790-569b-440f-a858-bddabf313e07', 'mongodb://localhost')
+#' }
 #' @export
 #' @import dplyr
 getDecisions <- function(taskId, connStr) {

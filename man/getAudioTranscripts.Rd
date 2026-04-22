@@ -18,5 +18,7 @@ A data frame with audio transcripts
 Get audio transcripts
 }
 \examples{
+\dontrun{
 getAudioTranscripts(tasks,connStr)
+}
 }

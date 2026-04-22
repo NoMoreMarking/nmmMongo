@@ -20,5 +20,7 @@ List with modifiedCount, matchedCount, upsertedCount
 Update an individual judge quota
 }
 \examples{
+\dontrun{
 updateJudgeQuota('ad888bb7-e47a-4e6b-b827-1498c752a389',55, 'mongodb://')
+}
 }

@@ -1,0 +1,183 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# nmmMongo
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+`nmmMongo` provides a collection of helper functions for querying and updating the No More Marking MongoDB database. Functions are organised by collection: syllabuses, tasks, candidates, judges, decisions, schools, products, purchases, invoices, and more.
+
+## Installation
+
+```r
+# install.packages("pak")
+pak::pak("NoMoreMarking/nmmMongo")
+```
+
+## Usage
+
+All functions require a MongoDB connection string (`connStr`). Set this once and pass it to each function call.
+
+```r
+library(nmmMongo)
+
+connStr <- "mongodb://..."
+```
+
+---
+
+## Syllabus
+
+| Function | Description |
+|---|---|
+| `getSyllabusById(id, connStr)` | Get a syllabus by its id |
+| `getSyllabusByName(name, connStr)` | Get a syllabus by name |
+| `getSyllabusByProduct(product, connStr)` | Get all syllabuses for a product id |
+| `setSyllabusReadyForJudging(syllabus, ready, connStr)` | Set or unset the ready-for-judging date on a syllabus |
+
+---
+
+## Tasks
+
+| Function | Description |
+|---|---|
+| `getTasks(taskName, connStr)` | Find tasks by name (regex match) |
+| `getTaskById(id, connStr)` | Get a task by its id |
+| `getTasksBySyllabus(syllabus, connStr)` | Get all tasks for a syllabus id |
+| `getTasksByModCode(modCode, connStr)` | Get all tasks for a moderation code |
+| `setModerationCode(task, modCode, connStr)` | Set the moderation code on a task |
+| `updateSyllabus(task, syllabus, connStr)` | Set the syllabus for a task |
+| `updateFromSyllabus(task, syllabus, connStr)` | Set the `fromSyllabus` field for a task |
+| `updateScaling(task, uScale, uiMean, anchorScale, connStr)` | Set scaling factors for a task |
+| `getScaling(task, connStr)` | Get scaling factors for a task |
+| `updateAnchorProduct(task, productName, connStr)` | Set the anchor product for a task |
+| `removeAnchorProduct(task, connStr)` | Remove the anchor product from a task |
+| `updateDefaultJudgements(task, quota, connStr)` | Set the default judgement quota for a task |
+| `updateShiftConstant(modTask, shiftConstant, connStr)` | Set the shift constant for a moderation task |
+
+---
+
+## Candidates / Persons
+
+| Function | Description |
+|---|---|
+| `getPersonsFromSyllabus(syllabus, connStr)` | Get all candidates for a syllabus |
+| `getPersonsFromTask(task, mod, connStr)` | Get candidates from a local or moderation task |
+| `setAsAnchor(firstName, lastName, modTask, theta, connStr)` | Set a candidate as an anchor in a moderation task |
+| `unsetModAnchors(modTask, connStr)` | Unset all anchors in a moderation task |
+| `updateMark(candidateId, mark, connStr)` | Update the mark for a candidate |
+| `getWritingAgeSet(writingAgeSet, connStr)` | Get a writing age look-up table |
+
+---
+
+## Judges
+
+| Function | Description |
+|---|---|
+| `getJudges(taskId, modTask, connStr)` | Get judges for a local or moderation task |
+| `getJudgesBySyllabus(syllabus, connStr)` | Get all judges across tasks in a syllabus |
+| `excludeJudge(judge_id, modTask, connStr)` | Exclude a judge from a task |
+| `excludeJudgeMod(judge_id, connStr)` | Exclude a judge from a moderation task |
+| `resetModJudges(task, connStr)` | Re-include all excluded judges in a moderation task |
+| `updateJudgeQuota(judge, quota, connStr)` | Update the quota for a judge |
+| `getJudgeComments(tasks, connStr)` | Get judge comments for a vector of tasks |
+| `getAudioTranscripts(tasks, connStr)` | Get audio transcripts for a vector of tasks |
+
+---
+
+## Decisions
+
+| Function | Description |
+|---|---|
+| `getDecisions(taskId, connStr)` | Get all decisions for a task, with judge and candidate details |
+| `excludeDecision(decision, connStr)` | Exclude a single decision |
+| `excludeDecisions(decisions, connStr)` | Exclude a vector of decisions |
+| `resetDecisions(task, connStr)` | Re-include all excluded decisions for a task |
+| `humaniseDecisions(task, connStr)` | Recode AI decisions as human decisions |
+| `robotiseDecisions(task, connStr)` | Recode human decisions as AI decisions |
+
+---
+
+## Levels
+
+| Function | Description |
+|---|---|
+| `getLevels(task, connStr)` | Get the level boundaries for a task |
+| `setLevels(task, boundaries, connStr)` | Replace the level boundaries for a task. `boundaries` must contain columns: `task`, `name`, `value`, `include`, `cutOff` |
+
+---
+
+## Schools & Trusts
+
+| Function | Description |
+|---|---|
+| `getSchoolByDfe(dfe, connStr)` | Get a school by its DfE number |
+| `getSchoolsByTrust(trustName, productName, connStr)` | Get all school DfEs in a trust for a given product |
+| `getTrusts(product, connStr)` | Get all trusts for a product |
+
+---
+
+## Products
+
+| Function | Description |
+|---|---|
+| `getProduct(id, connStr)` | Get a product by id |
+| `getProductByName(name, connStr)` | Get a product by name |
+
+---
+
+## Purchases & Sales
+
+| Function | Description |
+|---|---|
+| `getPurchase(id, connStr)` | Get a purchase by id |
+| `getPurchaseByProduct(id, connStr)` | Get purchases by product id |
+| `getSales(product, connStr)` | Get all purchase records for a product |
+
+---
+
+## Invoices
+
+| Function | Description |
+|---|---|
+| `getInvoiceByNumber(invoice, connStr)` | Get an invoice by invoice number |
+| `getInvoicesByDfe(dfe, connStr)` | Get all invoices for a DfE number |
+| `createInvoice(dfe, product, purchase_id, no, connStr)` | Create a new invoice |
+
+---
+
+## Editor / Texts
+
+| Function | Description |
+|---|---|
+| `getEditor(task, connStr)` | Get editor content for candidates in a task |
+| `getPersonTexts(ids, connStr)` | Get submitted text and word counts for a vector of candidate ids |
+
+---
+
+## Images
+
+| Function | Description |
+|---|---|
+| `getImages(task, connStr)` | Get image/scan page details for a task |
+
+---
+
+## Users
+
+| Function | Description |
+|---|---|
+| `getUser(auth, connStr)` | Get user personal details from an auth0 string |

@@ -160,7 +160,7 @@ getTaskById <- function(id,connStr){
   qryString <- paste0('{"_id":"',id,'"}')
   taskList <- tasksCollection$find(query = qryString, fields = '{"pugTemplate" : false, "owners": false, "reliabilities":false}')
   if(nrow(taskList)==0){
-    cat('No tasks found for', taskName,'.\n')
+    cat('No tasks found for', id,'.\n')
   }
   return(taskList)
 }

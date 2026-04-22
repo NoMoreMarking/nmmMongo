@@ -20,6 +20,8 @@ A data frame with judge details.
 Get judge details
 }
 \examples{
+\dontrun{
 getJudges(localTask,modTask=FALSE,connStr)
 getJudges(modTask,modTask=TRUE,connStr)
+}
 }

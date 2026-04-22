@@ -11,11 +11,11 @@ createInvoice(dfe, product, purchase_id, no, connStr)
 
 \item{product}{product id}
 
+\item{purchase_id}{purchase id}
+
 \item{no}{invoice number}
 
 \item{connStr}{A connection string.}
-
-\item{purchase}{purchase id}
 }
 \value{
 A string with confirmation
@@ -24,5 +24,7 @@ A string with confirmation
 Create a new invoice
 }
 \examples{
-createInvoice(dfe, product, purchase, no, 'mongodb://')
+\dontrun{
+createInvoice(dfe, product, purchase_id, no, 'mongodb://localhost')
+}
 }

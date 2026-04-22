@@ -20,5 +20,7 @@ Nothing
 Exclude a judge from a task
 }
 \examples{
+\dontrun{
 excludeJudge('o544AXuwEBADM9Lrk', FALSE,'mongodb://')
+}
 }

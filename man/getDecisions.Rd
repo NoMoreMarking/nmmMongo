@@ -18,5 +18,7 @@ A data frame with decisions.
 Get decisions from a task or tasks
 }
 \examples{
-getDecisions('67059790-569b-440f-a858-bddabf313e07', 'mongodb://')
+\dontrun{
+getDecisions('67059790-569b-440f-a858-bddabf313e07', 'mongodb://localhost')
+}
 }

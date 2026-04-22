@@ -4,7 +4,9 @@
 #' @param connStr A connection string.
 #' @return A data frame with judge details.
 #' @examples
+#' \dontrun{
 #' getJudgesBySyllabus(syllabusid, 'mongodb://')
+#' }
 #' @export
 getJudgesBySyllabus <- function(syllabus, connStr){
   tasks <- mongolite::mongo('tasks',url=connStr)
@@ -56,8 +58,10 @@ getJudgesBySyllabus <- function(syllabus, connStr){
 #' @param connStr A connection string.
 #' @return A data frame with judge details.
 #' @examples
+#' \dontrun{
 #' getJudges(localTask,modTask=FALSE,connStr)
 #' getJudges(modTask,modTask=TRUE,connStr)
+#' }
 #' @export
 getJudges <- function(taskId,modTask=FALSE,connStr){
   judges <- mongolite::mongo(db='nmm-vegas-db',collection="judges",url=connStr)
@@ -77,7 +81,9 @@ getJudges <- function(taskId,modTask=FALSE,connStr){
 #' @param connStr A connection string.
 #' @return Nothing
 #' @examples
+#' \dontrun{
 #' excludeJudge('o544AXuwEBADM9Lrk', FALSE,'mongodb://')
+#' }
 #' @export
 excludeJudge <- function(judge_id,modTask=FALSE,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
@@ -96,7 +102,9 @@ excludeJudge <- function(judge_id,modTask=FALSE,connStr){
 #' @param connStr A connection string.
 #' @return Nothing
 #' @examples
+#' \dontrun{
 #' excludeJudge('o544AXuwEBADM9Lrk', 'mongodb://')
+#' }
 #' @export
 excludeJudgeMod <- function(judge_id,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
@@ -111,7 +119,9 @@ excludeJudgeMod <- function(judge_id,connStr){
 #' @param connStr A connection string.
 #' @return Records affected
 #' @examples
+#' \dontrun{
 #' resetModJudges('o544AXuwEBADM9Lrk', 'mongodb://')
+#' }
 #' @export
 resetModJudges <- function(task,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
@@ -127,7 +137,9 @@ resetModJudges <- function(task,connStr){
 #' @param connStr A connection string.
 #' @return List with modifiedCount, matchedCount, upsertedCount
 #' @examples
+#' \dontrun{
 #' updateJudgeQuota('ad888bb7-e47a-4e6b-b827-1498c752a389',55, 'mongodb://')
+#' }
 #' @export
 updateJudgeQuota <- function(judge,quota,connStr){
   judges <- mongolite::mongo('judges',url=connStr)
@@ -143,7 +155,9 @@ updateJudgeQuota <- function(judge,quota,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with comments
 #' @examples
+#' \dontrun{
 #' getJudgeComments(tasks,connStr)
+#' }
 #' @export
 getJudgeComments <- function(tasks,connStr){
   judges <- mongolite::mongo(db='nmm-vegas-db',collection="judge.comments",url=connStr)
@@ -159,7 +173,9 @@ getJudgeComments <- function(tasks,connStr){
 #' @param connStr A connection string.
 #' @return A data frame with audio transcripts
 #' @examples
+#' \dontrun{
 #' getAudioTranscripts(tasks,connStr)
+#' }
 #' @export
 getAudioTranscripts <- function(tasks,connStr){
   audio <- mongolite::mongo(db='nmm-vegas-db',collection="audio.transcripts",url=connStr)

@@ -1,10 +1,12 @@
 #' Get sales data
 #'
-#' @param project The project id
+#' @param product The product id
 #' @param connStr A connection string.
 #' @return data frame product data
 #' @examples
-#' getSales('vqPwL2wWX8qc26nWs','mongodb://')
+#' \dontrun{
+#' getSales('vqPwL2wWX8qc26nWs', 'mongodb://localhost')
+#' }
 #' @export
 getSales <- function(product,connStr){
   basket <- mongolite::mongo(db='nmm-vegas-db',collection="purchases",url=connStr)

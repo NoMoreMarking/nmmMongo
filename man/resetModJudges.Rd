@@ -18,5 +18,7 @@ Records affected
 Re-include judges in a moderation task
 }
 \examples{
+\dontrun{
 resetModJudges('o544AXuwEBADM9Lrk', 'mongodb://')
+}
 }

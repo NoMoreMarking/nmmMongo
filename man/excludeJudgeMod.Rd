@@ -18,5 +18,7 @@ Nothing
 Exclude a judge from a moderation task
 }
 \examples{
+\dontrun{
 excludeJudge('o544AXuwEBADM9Lrk', 'mongodb://')
+}
 }

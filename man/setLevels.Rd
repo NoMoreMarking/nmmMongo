@@ -20,5 +20,7 @@ The levels that were updated
 Set levels data
 }
 \examples{
-setLevels('74537cb5-d97e-4d48-b89a-97a81b91cd34','mongodb://')
+\dontrun{
+setLevels('74537cb5-d97e-4d48-b89a-97a81b91cd34', boundaries, 'mongodb://localhost')
+}
 }

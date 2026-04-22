@@ -18,5 +18,7 @@ A data frame with invoices
 Get invoice details from dfe number
 }
 \examples{
-getInvoicesByDfe(123, 'mongodb://')
+\dontrun{
+getInvoicesByDfe(123, 'mongodb://localhost')
+}
 }
