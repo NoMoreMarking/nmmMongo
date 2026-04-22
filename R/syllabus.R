@@ -9,7 +9,7 @@
 getSyllabusById <- function(id,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
   qryString <- paste0('{"_id":"',id,'"}')
-  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "writingAgeSet":true, "writingAge": true,"activeStart":true, "startDate":true}')
+  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "writingAgeSet":true, "writingAge": true,"activeStart":true, "startDate":true, "startYear":true}')
   return(syllabusList)
 }
 
@@ -25,7 +25,7 @@ getSyllabusById <- function(id,connStr){
 getSyllabusByName <- function(name,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
   qryString <- paste0('{"name":"',name,'"}')
-  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "writingAgeSet":true, "writingAge": true,"activeStart":true, "startDate":true}')
+  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "writingAgeSet":true, "writingAge": true,"activeStart":true, "startDate":true, "startYear":true}')
   return(syllabusList)
 }
 
@@ -40,7 +40,7 @@ getSyllabusByName <- function(name,connStr){
 getSyllabusByProduct <- function(product,connStr){
   syllabusCollection <- mongolite::mongo(db='nmm-vegas-db',collection="syllabus",url=connStr)
   qryString <- paste0('{"product":"',product,'"}')
-  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "activeStart":true}')
+  syllabusList <- syllabusCollection$find(query = qryString,fields = '{"name" : true, "acYear": true, "modCode":true, "yearGroup":true, "product":true, "activeStart":true, "startDate":true, "startYear":true}')
   return(syllabusList)
 }
 
