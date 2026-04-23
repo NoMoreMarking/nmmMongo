@@ -18,6 +18,23 @@ getPersonsFromSyllabus <- function(syllabus, connStr){
   return(taskPersons)
 }
 
+#' Get age to scaled score look up table
+#'
+#' @description Get the age.to.scaled.score look up table for a given writing age set
+#' @param writingAgeSet The writing age set
+#' @param connStr A connection string.
+#' @return A data frame with daysAtTest, scaledScore, yearsAtTest and writingAgeSet
+#' @examples
+#' \dontrun{
+#' getAgeToScaledScore('APW 2024-2025 Standardisation', 'mongodb://localhost')
+#' }
+#' @export
+getAgeToScaledScore <- function(writingAgeSet, connStr) {
+  scores <- mongolite::mongo('age.to.scaled.score', url = connStr)
+  qryString <- paste0('{"writingAgeSet":"', writingAgeSet, '"}')
+  scores$find(qryString)
+}
+
 #' Get candidates from a task or tasks
 #'
 #' @description Get the candidates from a task. If the task is a moderation task, set mod=TRUE
