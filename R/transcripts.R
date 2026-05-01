@@ -1,6 +1,6 @@
-#' Get audio transcripts by ID
+#' Get audio transcripts by task ID
 #'
-#' @param ids A character vector of transcript IDs.
+#' @param ids A character vector of task IDs.
 #' @param connStr A connection string.
 #' @return A data frame with transcripts.
 #' @examples
@@ -11,10 +11,10 @@
 #' @export
 #' @import dplyr
 getTranscripts <- function(ids, connStr) {
-  transcripts <- mongolite::mongo('audio.transcripts', url = connStr)
-  idStr <- paste(shQuote(ids, type = "cmd"), collapse = ", ")
-  qry <- paste0('{"_id": {"$in": [', idStr, ']}}')
-  result <- transcripts$find(qry)
+  transcripts <- mongolite::mongo(collection = "audio.transcripts", db = "nmm-vegas-db", url = connStr)
+  idStr <- paste(paste0('"', ids, '"'), collapse = ", ")
+  qry <- paste0('{"task": {"$in": [', idStr, ']}}')
+  result <- transcripts$find(qry, fields = '{"_id": 1, "candidate": 1, "task": 1, "judge": 1, "side": 1, "text": 1, "createdAt": 1}')
   if (nrow(result) > 0) {
     result <- result |> dplyr::rename("id" = "_id")
   }
