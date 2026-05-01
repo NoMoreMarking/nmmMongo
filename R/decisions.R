@@ -107,23 +107,25 @@ getDecisions <- function(taskId, connStr) {
     ]
     '
   )
-  
+
   taskDecisions <- decisions$aggregate(pipeline, options = '{"allowDiskUse":true}')
   if (nrow(taskDecisions) > 0) {
+    n <- nrow(taskDecisions)
+    col <- function(x, ...) if (is.null(x)) rep(NA, n) else x
     taskDecisions <- data.frame(
-      id           = taskDecisions[["_id"]],
-      judgeId      = taskDecisions[["decisionJudge"]][["_id"]],
-      judge        = taskDecisions[["decisionJudge"]][["email"]],
-      chosenId     = taskDecisions[["chosenCandidate"]][["_id"]],
-      chosen       = taskDecisions[["chosenCandidate"]][["qrcode"]],
-      notChosenId  = taskDecisions[["notChosenCandidate"]][["_id"]],
-      notChosen    = taskDecisions[["notChosenCandidate"]][["qrcode"]],
-      timeTaken    = taskDecisions[["timeTaken"]],
-      isLeft       = taskDecisions[["isLeft"]],
-      isExternal   = taskDecisions[["isExternal"]],
-      createdAt    = taskDecisions[["createdAt"]],
-      exclude      = taskDecisions[["exclude"]],
-      autoAdded    = taskDecisions[["autoAdded"]]
+      id          = col(taskDecisions[["_id"]]),
+      judgeId     = col(taskDecisions[["decisionJudge"]][["_id"]]),
+      judge       = col(taskDecisions[["decisionJudge"]][["email"]]),
+      chosenId    = col(taskDecisions[["chosenCandidate"]][["_id"]]),
+      chosen      = col(taskDecisions[["chosenCandidate"]][["qrcode"]]),
+      notChosenId = col(taskDecisions[["notChosenCandidate"]][["_id"]]),
+      notChosen   = col(taskDecisions[["notChosenCandidate"]][["qrcode"]]),
+      timeTaken   = col(taskDecisions[["timeTaken"]]),
+      isLeft      = col(taskDecisions[["isLeft"]]),
+      isExternal  = col(taskDecisions[["isExternal"]]),
+      createdAt   = col(taskDecisions[["createdAt"]]),
+      exclude     = col(taskDecisions[["exclude"]]),
+      autoAdded   = col(taskDecisions[["autoAdded"]])
     )
   }
   return(taskDecisions)

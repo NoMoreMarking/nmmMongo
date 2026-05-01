@@ -18,3 +18,8 @@ Imports:
 License: MIT + file LICENSE
 Depends: 
     mongolite
+Suggests: 
+    dotenv,
+    here,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
