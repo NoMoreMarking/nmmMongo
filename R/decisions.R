@@ -64,6 +64,7 @@ getDecisions <- function(taskId, connStr) {
     "$project" : {
     "decisionJudge._id":  1.0,
     "decisionJudge.email" : 1.0,
+    "chosenCandidate._id" : 1.0,
     "chosenCandidate.qrcode" : 1.0,
     "notChosen" : 1.0,
     "timeTaken" : 1.0,
@@ -91,7 +92,9 @@ getDecisions <- function(taskId, connStr) {
     "$project" : {
     "decisionJudge._id":  1.0,
     "decisionJudge.email" : 1.0,
+    "chosenCandidate._id" : 1.0,
     "chosenCandidate.qrcode" : 1.0,
+    "notChosenCandidate._id" : 1.0,
     "notChosenCandidate.qrcode" : 1.0,
     "timeTaken" : 1.0,
     "isLeft" : 1.0,
@@ -105,15 +108,22 @@ getDecisions <- function(taskId, connStr) {
     '
   )
   
-  taskDecisions <- decisions$aggregate(pipeline,options = '{"allowDiskUse":true}')
-  if(nrow(taskDecisions)>0){
-    taskDecisions <- jsonlite::flatten(taskDecisions)
-    taskDecisions <- taskDecisions %>% dplyr::rename(
-      "id"= "_id",
-      "judgeId"="decisionJudge._id",
-      "judge"="decisionJudge.email",
-      "chosen"="chosenCandidate.qrcode",
-      "notChosen"="notChosenCandidate.qrcode"
+  taskDecisions <- decisions$aggregate(pipeline, options = '{"allowDiskUse":true}')
+  if (nrow(taskDecisions) > 0) {
+    taskDecisions <- data.frame(
+      id           = taskDecisions[["_id"]],
+      judgeId      = taskDecisions[["decisionJudge"]][["_id"]],
+      judge        = taskDecisions[["decisionJudge"]][["email"]],
+      chosenId     = taskDecisions[["chosenCandidate"]][["_id"]],
+      chosen       = taskDecisions[["chosenCandidate"]][["qrcode"]],
+      notChosenId  = taskDecisions[["notChosenCandidate"]][["_id"]],
+      notChosen    = taskDecisions[["notChosenCandidate"]][["qrcode"]],
+      timeTaken    = taskDecisions[["timeTaken"]],
+      isLeft       = taskDecisions[["isLeft"]],
+      isExternal   = taskDecisions[["isExternal"]],
+      createdAt    = taskDecisions[["createdAt"]],
+      exclude      = taskDecisions[["exclude"]],
+      autoAdded    = taskDecisions[["autoAdded"]]
     )
   }
   return(taskDecisions)
