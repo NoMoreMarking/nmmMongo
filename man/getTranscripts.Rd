@@ -2,12 +2,12 @@
 % Please edit documentation in R/transcripts.R
 \name{getTranscripts}
 \alias{getTranscripts}
-\title{Get audio transcripts for a task}
+\title{Get audio transcripts by task ID}
 \usage{
-getTranscripts(taskId, connStr)
+getTranscripts(ids, connStr)
 }
 \arguments{
-\item{taskId}{The task ID.}
+\item{ids}{A character vector of task IDs.}
 
 \item{connStr}{A connection string.}
 }
@@ -15,10 +15,11 @@ getTranscripts(taskId, connStr)
 A data frame with transcripts.
 }
 \description{
-Get audio transcripts for a task
+Get audio transcripts by task ID
 }
 \examples{
 \dontrun{
 getTranscripts('e4e50343-e73c-4542-a94e-230dce54096b', 'mongodb://localhost')
+getTranscripts(c('e4e50343-e73c-4542-a94e-230dce54096b', 'abc123'), 'mongodb://localhost')
 }
 }

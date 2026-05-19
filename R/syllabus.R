@@ -64,3 +64,30 @@ setSyllabusReadyForJudging <- function(syllabus,ready,connStr){
   out <- tasks$update(pipeline, updateStr,multiple = TRUE)
   return (out)
 }
+
+#' Set file prompt paths on a syllabus
+#'
+#' Sets the four filePrompt fields using a shared path suffix, prepending
+#' the appropriate subdirectory for each prompt type.
+#'
+#' @param syllabus The syllabus id
+#' @param path Path suffix appended to each prompt subdirectory
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' setSyllabusFilePrompts('abc123', 'apw/2025-2026-y6.txt', 'mongodb://')
+#' @export
+setSyllabusFilePrompts <- function(syllabus, path, connStr) {
+  syllabusCollection <- mongolite::mongo(db = 'nmm-vegas-db', collection = 'syllabus', url = connStr)
+  qryString <- paste0('{"_id":"', syllabus, '"}')
+  updateStr <- paste0(
+    '{"$set":{',
+      '"filePrompt_judging":"judging/', path, '",',
+      '"filePrompt_studentJudgeSumm":"studentJudgeSumm/', path, '",',
+      '"filePrompt_studentAssessTab":"studentAssessTab/', path, '",',
+      '"filePrompt_teacherAssessTab":"teacherAssessTab/', path, '"',
+    '}}'
+  )
+  out <- syllabusCollection$update(qryString, updateStr)
+  return(out)
+}
