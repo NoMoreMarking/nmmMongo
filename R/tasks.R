@@ -235,3 +235,31 @@ removeAnchorProduct <- function(task,connStr){
   return (out)
 }
 
+#' Reset AI feedback for a task
+#'
+#' Removes aiReports from all candidates with the given task and removes
+#' schoolSummary and teacherGroupSummaries from the task itself.
+#'
+#' @param task The task id.
+#' @param connStr A connection string.
+#' @return Nothing
+#' @examples
+#' resetAiFeedback('da3a061f-7813-41fc-b7df-f7ec4a41e3c1', 'mongodb://')
+#' @export
+resetAiFeedback <- function(task, connStr) {
+  candidates <- mongolite::mongo('candidates', url = connStr)
+  candidates$update(
+    paste0('{"localTask":"', task, '"}'),
+    '{"$unset":{"aiReports":""}}',
+    multiple = TRUE
+  )
+
+  tasks <- mongolite::mongo('tasks', url = connStr)
+  tasks$update(
+    paste0('{"_id":"', task, '"}'),
+    '{"$unset":{"schoolSummary":"","teacherGroupSummaries":""}}'
+  )
+
+  return(NULL)
+}
+
