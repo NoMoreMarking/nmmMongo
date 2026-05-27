@@ -80,12 +80,15 @@ setSyllabusReadyForJudging <- function(syllabus,ready,connStr){
 setSyllabusFilePrompts <- function(syllabus, path, connStr) {
   syllabusCollection <- mongolite::mongo(db = 'nmm-vegas-db', collection = 'syllabus', url = connStr)
   qryString <- paste0('{"_id":"', syllabus, '"}')
+  folder <- dirname(path)
   updateStr <- paste0(
     '{"$set":{',
       '"filePrompt_judging":"judging/', path, '",',
       '"filePrompt_studentJudgeSumm":"studentJudgeSumm/', path, '",',
       '"filePrompt_studentAssessTab":"studentAssessTab/', path, '",',
-      '"filePrompt_teacherAssessTab":"teacherAssessTab/', path, '"',
+      '"filePrompt_teacherAssessTab":"teacherAssessTab/', path, '",',
+      '"folderPrompts_createQuiz":"quizzes/', folder, '",',
+      '"folderPrompts_quizTemplates":"quiz-templates/', folder, '"',
     '}}'
   )
   out <- syllabusCollection$update(qryString, updateStr)
