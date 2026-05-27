@@ -17,6 +17,7 @@ Nothing
 \description{
 Removes aiReports from all candidates with the given task and removes
 schoolSummary and teacherGroupSummaries from the task itself.
+Also deletes all quiz questions associated with the task.
 }
 \examples{
 resetAiFeedback('da3a061f-7813-41fc-b7df-f7ec4a41e3c1', 'mongodb://')

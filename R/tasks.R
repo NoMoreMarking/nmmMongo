@@ -239,6 +239,7 @@ removeAnchorProduct <- function(task,connStr){
 #'
 #' Removes aiReports from all candidates with the given task and removes
 #' schoolSummary and teacherGroupSummaries from the task itself.
+#' Also deletes all quiz questions associated with the task.
 #'
 #' @param task The task id.
 #' @param connStr A connection string.
@@ -259,6 +260,9 @@ resetAiFeedback <- function(task, connStr) {
     paste0('{"_id":"', task, '"}'),
     '{"$unset":{"schoolSummary":"","teacherGroupSummaries":""}}'
   )
+
+  quiz_questions <- mongolite::mongo('quiz.questions', url = connStr)
+  quiz_questions$remove(paste0('{"localTask":"', task, '"}'))
 
   return(NULL)
 }
