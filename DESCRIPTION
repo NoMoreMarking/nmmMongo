@@ -17,6 +17,7 @@ Imports:
     uuid
 License: MIT + file LICENSE
 Depends: 
+    R (>= 4.1.0),
     mongolite
 Suggests: 
     dotenv,
