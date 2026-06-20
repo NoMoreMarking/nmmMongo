@@ -85,7 +85,30 @@ setSyllabusFilePrompts <- function(syllabus, path, connStr) {
       '"filePrompt_judging":"judging/', path, '",',
       '"filePrompt_studentJudgeSumm":"studentJudgeSumm/', path, '",',
       '"filePrompt_studentAssessTab":"studentAssessTab/', path, '",',
-      '"filePrompt_teacherAssessTab":"teacherAssessTab/', path, '",',
+      '"filePrompt_teacherAssessTab":"teacherAssessTab/', path, '"',
+    '}}'
+  )
+  out <- syllabusCollection$update(qryString, updateStr)
+  return(out)
+}
+
+#' Set folder prompt paths on a syllabus
+#'
+#' Sets the folderPrompts fields using a shared path suffix, prepending
+#' the appropriate subdirectory for each prompt type.
+#'
+#' @param syllabus The syllabus id
+#' @param path Path suffix appended to each prompt subdirectory
+#' @param connStr A connection string.
+#' @return List with modifiedCount, matchedCount, upsertedCount
+#' @examples
+#' setSyllabusFolderPrompts('abc123', 'apw/2025-2026-y6', 'mongodb://')
+#' @export
+setSyllabusFolderPrompts <- function(syllabus, path, connStr) {
+  syllabusCollection <- mongolite::mongo(db = 'nmm-vegas-db', collection = 'syllabus', url = connStr)
+  qryString <- paste0('{"_id":"', syllabus, '"}')
+  updateStr <- paste0(
+    '{"$set":{',
       '"folderPrompts_createQuiz":"quizzes/', path, '",',
       '"folderPrompts_quizTemplates":"quiz-templates/', path, '"',
     '}}'
